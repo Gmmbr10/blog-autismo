@@ -1,0 +1,36 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.navbar__link {
+    font-weight: bold;
+    color: var(--dark);
+    position: relative;
+}
+
+.navbar__link--active {
+    color: var(--primary);
+}
+
+.navbar__link::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 0;
+    bottom: -8px;
+    height: 2px;
+    transition: all .2s;
+}
+
+.navbar__link:hover::after {
+    width: 100%;
+    background-color: var(--primary);
+}
+
+.navbar__link--active::after {
+    width: 100%;
+    background-color: var(--primary);
+}

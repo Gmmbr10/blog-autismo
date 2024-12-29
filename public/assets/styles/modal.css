@@ -1,0 +1,50 @@
+.modal::backdrop {
+    background-color: rgba(0,0,0,.7);
+}
+
+.modal {
+  width: calc(100% - 48px);
+  max-width: 500px;
+  height: max-content;
+  max-height: 500px;
+  margin: auto;
+  position: relative;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.modal__close {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  cursor: pointer;
+  border: 2px solid var(--primary);
+  background-color: var(--light);
+  color: var(--primary);
+  padding: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  display: grid;
+  place-content: center;
+  transition: all .2s;
+}
+
+.modal__close:hover {
+  background-color: var(--primary);
+  color: var(--light);
+}
+
+.modal > :nth-child(2) {
+  padding: 44px 16px 8px 16px;
+}
+
+.modal > :nth-child(3) {
+  padding: 8px 32px 48px;
+}
+
+.modal__header {
+  font-size: 20pt;
+  font-weight: bold;
+}

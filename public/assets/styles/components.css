@@ -1,0 +1,66 @@
+.logo {
+    width: 64px;
+}
+
+.btn {
+    cursor: pointer;
+    height: max-content;
+    text-align: center;
+    padding: 16px 32px;
+    display: inline-block;
+
+    background: var(--primary);
+    color: var(--light);
+    
+    border-radius: 800px;
+    border: 2px solid var(--primary);
+
+    font-weight: bold;
+}
+
+.btn--outline {
+    background-color: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn--radius-none {
+    border-radius: 4px;
+}
+
+.link {
+	color: var(--primary);
+	text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+    word-break: keep-all;
+}
+
+.error {
+    display: block;
+    font-weight: normal;
+    background-color: var(--error);
+    border: 1px solid var(--error-font);
+    color: var(--error-font);
+    border-radius: 4px;
+    padding: 12px 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+.btn__top {
+    display: none;
+    position: fixed;
+    bottom: 32px;
+    right: 48px;
+    border-radius: 100px;
+    width: 48px;
+    height: 48px;
+    border: none;
+    background-color: var(--primary);
+    color: var(--light);
+    font-size: 12pt;
+    cursor: pointer;
+}

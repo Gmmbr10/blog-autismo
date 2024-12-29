@@ -1,0 +1,38 @@
+.card {
+    padding: 240px 16px;
+    background-color: var(--primary);
+    color: var(--light);
+    border-radius: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    font-weight: bold;
+}
+
+.card p {
+    font-size: 32px;
+}
+
+.card i {
+    font-size: 48px;
+}
+
+.card--vertical-center {
+    align-items: center;
+}
+
+@media ( max-width: 700px ) {
+    .card {
+        padding: 48px 24px;
+        gap: 16px;
+        border-radius: 40px;
+    }
+
+    .card p {
+        font-size: 24px;
+    }
+    
+    .card i {
+        font-size: 32px;
+    }
+}

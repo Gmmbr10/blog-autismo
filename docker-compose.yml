@@ -1,0 +1,20 @@
+services:
+  app:
+    build: .
+    networks:
+      - blog
+    ports:
+      - 8888:80
+    volumes:
+      - .:/var/www/html
+  db:
+    image: mariadb:10.6
+    networks:
+      - blog
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+networks:
+  blog:
+    driver: "bridge"
