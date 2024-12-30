@@ -1,0 +1,16 @@
+.tags {
+  padding: 16px 0;
+  border-top: 1px solid var(--gray);
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.tags__tag {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  font-weight: bold;
+}

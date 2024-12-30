@@ -1,0 +1,34 @@
+.breadcumbs {
+  width: max-content;
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+}
+
+.breadcumbs * {
+  color: var(--primary);
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+}
+
+.breadcumbs p {
+  color: var(--dark)
+}
+
+.breadcumbs *::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--dark);
+  border-top: 2px solid var(--dark);
+  position: absolute;
+  top: 35%;
+  left: -18px;
+  rotate: 45deg;
+}
+
+.breadcumbs *:first-child::before {
+  display: none;
+}

@@ -50,3 +50,11 @@ p,a,span,button {
 .primary {
     color: var(--primary) !important;
 }
+
+.text--bold {
+    font-weight: bold;
+}
+
+.title--margin-none {
+    margin: 0;
+}
