@@ -9,6 +9,10 @@
     gap: 28px;
 }
 
+.form--large {
+    max-width: 1000px;
+}
+
 .form__box {
     width: 100%;
     display: flex;
