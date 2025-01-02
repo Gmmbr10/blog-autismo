@@ -20,6 +20,14 @@ class App
 
 		require_once __DIR__ . "/controllers/" . $controller . ".php";
 
+		if ( $controller == "AdminController" ) {
+
+			$controller = new $controller();
+			
+			return;
+			
+		}
+		
 		$controller = new $controller();
 
 		$method = ( isset($url[1]) && !is_numeric($url[1]) && method_exists($controller, $url[1]) ) ? $url[1] : "index";

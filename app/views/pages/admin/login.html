@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog autismo</title>
+    {script_style}
+  </head>
+  <body>
+    {component_header}
+
+    <main
+      class="container bg--gray container--vertical-center container--horizontal-center"
+    >
+      <form
+        action="#"
+        method="POST"
+        id="login"
+        class="column-1 column--vertical-center column--horizontal-center bg--light form"
+      >
+        <h1 class="title--2">Entrar</h1>
+
+        <section id="email" class="form__box">
+          <label for="#" class="form__label">Email:</label>
+
+          <input
+            type="email"
+            name="#"
+            class="form__input"
+            placeholder="exemplo@email.com"
+          />
+
+          <span id="#" class="error hidden"></span>
+        </section>
+
+        <section id="senha" class="form__box">
+          <label for="#" class="form__label">Senha:</label>
+
+          <section class="password">
+            <input
+              type="password"
+              name="#"
+              id="password"
+              class="form__input"
+              placeholder="senha123"
+            />
+            <i id="eye-password" class="fa-solid fa-eye"></i>
+          </section>
+
+          <span id="#" class="error hidden"></span>
+        </section>
+
+        <button type="submit" class="btn btn--radius-none w-100">Entrar</button>
+      </form>
+    </main>
+
+    {component_footer}
+
+    <script src="{include_path}/public/assets/scripts/viewPassword.js"></script>
+    <script>
+      const form = document.getElementById("login");
+
+      form.onsubmit = function (event) {
+        event.preventDefault();
+
+        const userData = {};
+        let error = 0;
+
+        const email = document.getElementById("email");
+        userData.email = email.querySelector("input").value;
+
+        if (!userData.email) {
+          error++;
+          email.querySelector("span").innerText = "Preencha o campo email!";
+          email.querySelector("span").classList.toggle("hidden");
+        }
+
+        const senha = document.getElementById("senha");
+        userData.senha = senha.querySelector("input").value;
+
+        if (!userData.senha) {
+          error++;
+          senha.querySelector("span").innerText = "Preencha o campo senha!";
+          senha.querySelector("span").classList.toggle("hidden");
+        }
+
+        if (error != 0) {
+          setTimeout(() => {
+            email.querySelector("span").innerText = "";
+            email.querySelector("span").classList.toggle("hidden");
+
+            senha.querySelector("span").innerText = "";
+            senha.querySelector("span").classList.toggle("hidden");
+          }, 3000);
+
+          return;
+        }
+      };
+    </script>
+  </body>
+</html>

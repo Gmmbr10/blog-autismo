@@ -34,3 +34,8 @@
     width: 100%;
     background-color: var(--primary);
 }
+
+.navbar--vertical {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,26 @@
+.flex--row {
+	display: flex;
+	flex-direction: row;
+  
+  >*:nth-child(1) {
+    flex: 1;
+    border-right: 1px solid var(--dark-gray);
+    
+    >* {
+      display: block;
+      padding: 24px 16px;
+      color: var(--primary);
+      font-weight: bold;
+      transition: all .2s;
+    }
+
+    >*:hover {
+      color: var(--light);
+      background-color: var(--primary);
+    }
+  }
+
+  >*:nth-child(2) {
+    flex: 6;
+  }
+}
