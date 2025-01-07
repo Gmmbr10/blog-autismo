@@ -125,9 +125,9 @@
         let error = 0;
 
         const nome = document.getElementById("nome");
-        userData.nome = nome.querySelector("input").value;
+        userData.name = nome.querySelector("input").value;
 
-        if (!userData.nome) {
+        if (!userData.name) {
           error++;
           nome.querySelector("span").innerText = "Preencha o campo nome!";
           nome.querySelector("span").classList.toggle("hidden");
@@ -143,18 +143,18 @@
         }
 
         const senha = document.getElementById("senha");
-        userData.senha = senha.querySelector("input").value;
+        userData.password = senha.querySelector("input").value;
 
-        if (!userData.senha) {
+        if (!userData.password) {
           error++;
           senha.querySelector("span").innerText = "Preencha o campo senha!";
           senha.querySelector("span").classList.toggle("hidden");
         }
 
         const confirmar_senha = document.getElementById("confirmar_senha");
-        userData.confirmar_senha = confirmar_senha.querySelector("input").value;
+        userData.password_confirm = confirmar_senha.querySelector("input").value;
 
-        if (!userData.confirmar_senha) {
+        if (!userData.password_confirm) {
           error++;
           confirmar_senha.querySelector("span").innerText =
             "Preencha o campo confirme a senha!";
@@ -178,6 +178,15 @@
 
           return;
         }
+
+        const ajax = new XMLHttpRequest();
+
+        ajax.onload = () => {
+          console.log(ajax);
+        }
+
+        ajax.open("POST","{include_path}/api/user/create",true);
+        ajax.send(JSON.stringify(userData));
       };
     </script>
     <script src="{include_path}/public/assets/scripts/modal.js"></script>
