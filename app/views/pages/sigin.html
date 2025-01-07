@@ -20,6 +20,8 @@
       >
         <h1 class="title--2">Cadastre-se</h1>
 
+        <span class="success"></span>
+
         <section id="nome" class="form__box">
           <label for="nome" class="form__label">Nome:</label>
 
@@ -30,7 +32,7 @@
             placeholder="Exemplo"
           />
 
-          <span class="error hidden"></span>
+          <span class="error "></span>
         </section>
 
         <section id="email" class="form__box">
@@ -43,7 +45,7 @@
             placeholder="exemplo@email.com"
           />
 
-          <span id="email" class="error hidden"></span>
+          <span id="email" class="error "></span>
         </section>
 
         <section id="senha" class="form__box">
@@ -60,7 +62,7 @@
             <i id="eye-password" class="fa-solid fa-eye"></i>
           </section>
 
-          <span id="senha" class="error hidden"></span>
+          <span id="senha" class="error "></span>
         </section>
         <section id="confirmar_senha" class="form__box">
           <label for="confirmar_senha" class="form__label"
@@ -78,10 +80,12 @@
             <i id="eye-password" class="fa-solid fa-eye"></i>
           </section>
 
-          <span id="confirmar_senha" class="error hidden"></span>
+          <span id="confirmar_senha" class="error "></span>
         </section>
 
-        <span class="link" onclick="abrir_modal('privacidade')">Política de privacidade</span>
+        <span class="link" onclick="abrir_modal('privacidade')"
+          >Política de privacidade</span
+        >
 
         <button type="submit" class="btn btn--radius-none w-100">
           Cadastrar
@@ -97,21 +101,13 @@
     {component_footer}
 
     <dialog id="privacidade" class="modal">
-
       <span class="modal__close"><i class="fa-solid fa-close"></i></span>
 
-      <header class="modal__header">
-        Política de privacidade
-      </header>
+      <header class="modal__header">Política de privacidade</header>
 
       <main class="modal__container text--left">
-
-        <p>
-          Conteúdo
-        </p>
-        
+        <p>Conteúdo</p>
       </main>
-      
     </dialog>
 
     <script src="{include_path}/public/assets/scripts/viewPassword.js"></script>
@@ -130,7 +126,6 @@
         if (!userData.name) {
           error++;
           nome.querySelector("span").innerText = "Preencha o campo nome!";
-          nome.querySelector("span").classList.toggle("hidden");
         }
 
         const email = document.getElementById("email");
@@ -139,7 +134,6 @@
         if (!userData.email) {
           error++;
           email.querySelector("span").innerText = "Preencha o campo email!";
-          email.querySelector("span").classList.toggle("hidden");
         }
 
         const senha = document.getElementById("senha");
@@ -148,32 +142,27 @@
         if (!userData.password) {
           error++;
           senha.querySelector("span").innerText = "Preencha o campo senha!";
-          senha.querySelector("span").classList.toggle("hidden");
         }
 
         const confirmar_senha = document.getElementById("confirmar_senha");
-        userData.password_confirm = confirmar_senha.querySelector("input").value;
+        userData.password_confirm =
+          confirmar_senha.querySelector("input").value;
 
         if (!userData.password_confirm) {
           error++;
           confirmar_senha.querySelector("span").innerText =
             "Preencha o campo confirme a senha!";
-          confirmar_senha.querySelector("span").classList.toggle("hidden");
         }
 
         if (error != 0) {
           setTimeout(() => {
             nome.querySelector("span").innerText = "";
-            nome.querySelector("span").classList.toggle("hidden");
 
             email.querySelector("span").innerText = "";
-            email.querySelector("span").classList.toggle("hidden");
 
             senha.querySelector("span").innerText = "";
-            senha.querySelector("span").classList.toggle("hidden");
 
             confirmar_senha.querySelector("span").innerText = "";
-            confirmar_senha.querySelector("span").classList.toggle("hidden");
           }, 3000);
 
           return;
@@ -182,10 +171,15 @@
         const ajax = new XMLHttpRequest();
 
         ajax.onload = () => {
-          console.log(ajax);
-        }
+          if ( ajax.status == 201 ) {
+            nome.querySelector("input").value = "";
+            email.querySelector("input").value = "";
+            senha.querySelector("input").value = "";
+            confirmar_senha.querySelector("input").value = "";
+          }
+        };
 
-        ajax.open("POST","{include_path}/api/user/create",true);
+        ajax.open("POST", "{include_path}/api/user/create", true);
         ajax.send(JSON.stringify(userData));
       };
     </script>

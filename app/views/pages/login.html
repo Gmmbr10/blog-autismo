@@ -30,7 +30,7 @@
             placeholder="exemplo@email.com"
           />
 
-          <span id="#" class="error hidden"></span>
+          <span id="#" class="error "></span>
         </section>
 
         <section id="senha" class="form__box">
@@ -47,7 +47,7 @@
             <i id="eye-password" class="fa-solid fa-eye"></i>
           </section>
 
-          <span id="#" class="error hidden"></span>
+          <span id="#" class="error "></span>
         </section>
 
         <button type="submit" class="btn btn--radius-none w-100">Entrar</button>
@@ -77,29 +77,38 @@
         if (!userData.email) {
           error++;
           email.querySelector("span").innerText = "Preencha o campo email!";
-          email.querySelector("span").classList.toggle("hidden");
         }
 
         const senha = document.getElementById("senha");
-        userData.senha = senha.querySelector("input").value;
+        userData.password = senha.querySelector("input").value;
 
-        if (!userData.senha) {
+        if (!userData.password) {
           error++;
           senha.querySelector("span").innerText = "Preencha o campo senha!";
-          senha.querySelector("span").classList.toggle("hidden");
         }
 
         if (error != 0) {
           setTimeout(() => {
             email.querySelector("span").innerText = "";
-            email.querySelector("span").classList.toggle("hidden");
-
             senha.querySelector("span").innerText = "";
-            senha.querySelector("span").classList.toggle("hidden");
           }, 3000);
 
           return;
         }
+
+        const ajax = new XMLHttpRequest();
+
+        ajax.onload = () => {
+          if ( ajax.status == 202 ) {
+            email.querySelector("input").value = "";
+            senha.querySelector("input").value = "";
+            window.location.href = "{include_path}/home";
+          }
+        };
+
+        ajax.open("POST", "{include_path}/api/user/search", true);
+        ajax.send(JSON.stringify(userData));
+        
       };
     </script>
   </body>

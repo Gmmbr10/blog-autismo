@@ -2,10 +2,31 @@
 
 class UserModel extends Model {
 
-  public function list(array $data)
+  public function list($userData)
   {
 
+    if ( !empty($userId) && is_numeric($userData) ) {
+      return false;
+    }
 
+    $query = "SELECT * FROM users WHERE user_email=:email LIMIT 1";
+    $list = $this->getConnection()->prepare($query);
+    $list->bindParam(":email",$userData["email"],PDO::PARAM_STR);
+    $list->execute();
+
+    if ( $user = $list->fetch() ) {
+
+      if (password_verify($userData["password"],$user["user_password"])){
+
+        return $user;
+        
+      }
+
+      return false;
+
+    }
+
+    return false;
     
   }
 
