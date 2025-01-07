@@ -39,15 +39,8 @@
 .error {
     display: block;
     font-weight: normal;
-    background-color: var(--error);
-    border: 1px solid var(--error-font);
     color: var(--error-font);
     border-radius: 4px;
-    padding: 12px 8px;
-}
-
-.hidden {
-    display: none;
 }
 
 .btn__top {
