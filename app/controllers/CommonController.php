@@ -82,6 +82,7 @@ class CommonController {
 			$html = str_replace("{script_style}", $links, $html);
 			$html = str_replace("{component_header}", $header, $html);
 			$html = str_replace("{component_footer}", $footer, $html);
+			$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
 			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
 			echo $html;
