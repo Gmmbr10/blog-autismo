@@ -21,25 +21,25 @@
         <h1 class="title--2">Entrar</h1>
 
         <section id="email" class="form__box">
-          <label for="#" class="form__label">Email:</label>
+          <label for="email_input" class="form__label">Email:</label>
 
           <input
             type="email"
-            name="#"
+            name="email_input"
             class="form__input"
             placeholder="exemplo@email.com"
           />
 
-          <span id="#" class="error "></span>
+          <span id="email_error" class="error"></span>
         </section>
 
         <section id="senha" class="form__box">
-          <label for="#" class="form__label">Senha:</label>
+          <label for="senha_input" class="form__label">Senha:</label>
 
           <section class="password">
             <input
               type="password"
-              name="#"
+              name="senha_input"
               id="password"
               class="form__input"
               placeholder="senha123"
@@ -47,7 +47,7 @@
             <i id="eye-password" class="fa-solid fa-eye"></i>
           </section>
 
-          <span id="#" class="error "></span>
+          <span id="password_error" class="error"></span>
         </section>
 
         <button type="submit" class="btn btn--radius-none w-100">Entrar</button>
@@ -102,7 +102,7 @@
           if ( ajax.status == 202 ) {
             email.querySelector("input").value = "";
             senha.querySelector("input").value = "";
-            window.location.href = "{include_path}/home";
+            window.location.href = "{include_path}/common";
           }
         };
 
