@@ -23,5 +23,47 @@ class PostModel extends Model {
     return true;
     
   }
+
+  public function listViews()
+  {
+
+    // $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where review_auth = 1";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id order by posts.post_countView desc";
+    $select = $this->getConnection()->prepare($query);
+    $select->execute();
+
+    if ( $select->rowCount() == 0 ) {
+      return "Não encontrado";
+    }
+
+    // $result = [];
+
+    // for ( $i = 0 ; $i < $select->rowCount() ; $i++ ) {
+    //   $result[] = $select->fetch(PDO::FETCH_ASSOC);
+    // }
+
+    return $select->fetchAll();
+  }
+
+  public function listPublish()
+  {
+
+    // $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where review_auth = 1";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id order by posts.post_id desc";
+    $select = $this->getConnection()->prepare($query);
+    $select->execute();
+
+    if ( $select->rowCount() == 0 ) {
+      return "Não encontrado";
+    }
+
+    // $result = [];
+
+    // for ( $i = 0 ; $i < $select->rowCount() ; $i++ ) {
+    //   $result[] = $select->fetch(PDO::FETCH_ASSOC);
+    // }
+
+    return $select->fetchAll();
+  }
   
 }
