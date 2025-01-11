@@ -66,4 +66,20 @@ class PostModel extends Model {
     return $select->fetchAll();
   }
   
+  public function list(int $postId)
+  {
+
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id WHERE post_id = :id";
+    $select = $this->getConnection()->prepare($query);
+    $select->bindParam(":id",$postId,PDO::PARAM_INT);
+    $select->execute();
+
+    if ( $select->rowCount() == 0 ) {
+      return false;
+    }
+
+    return $select->fetch();
+    
+  }
+  
 }

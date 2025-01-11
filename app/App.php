@@ -33,7 +33,10 @@ class App
 		$method = ( isset($url[1]) && !is_numeric($url[1]) && method_exists($controller, $url[1]) ) ? $url[1] : "index";
 
 		array_shift($url);
-		array_shift($url);
+
+		if ( $method != "index" ) {
+			array_shift($url);
+		}
 
 		$data = $url;
 

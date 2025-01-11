@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog autismo</title>
+    {script_style}
+  </head>
+
+  <body>
+    {component_header}
+
+    <main class="container">
+
+      <nav class="breadcumbs">
+        {component_navbar}
+      </nav>
+      
+      <section class="container__center text">
+
+        <h1 class="title--1 text--center title--margin-none">{title}</h1>
+
+        <section class="author">
+          <img src="#" class="author__img">
+          <p class="author__name">{author}</p>
+        </section>
+
+        {content}
+
+      </section>
+
+    </main>
+
+    {component_footer}
+  </body>
+</html>

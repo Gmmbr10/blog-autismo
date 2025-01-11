@@ -4,7 +4,7 @@ class Model {
 
   private static $host = "127.0.0.1";
   private static $database = "blog";
-  private static $user = "root";
+  private static $user = "giovanne";
   private static $password = "";
   private static $connection = null;
   
