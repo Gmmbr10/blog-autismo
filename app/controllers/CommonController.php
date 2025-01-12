@@ -13,6 +13,12 @@ class CommonController {
 			$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
 			$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
 			$html = file_get_contents(__DIR__ . "/../views/pages/user/home.html");
+
+			if ( sizeof($data) != 0 ) {
+				$html = file_get_contents(__DIR__ . "/../views/pages/user/post.html");
+				$navbar = file_get_contents(__DIR__ . "/../views/components/navbar-recentes.html");
+				$html = str_replace("{component_navbar}", $navbar, $html);
+			}
 			
 			$header = str_replace("{inicio}", "navbar__link--active", $header);
 			$header = str_replace("{recentes}", "", $header);
@@ -26,6 +32,27 @@ class CommonController {
 			require_once __DIR__ . "/../core/Model.php";
 			require_once __DIR__ . "/../models/PostModel.php";
 			$model = new PostModel();
+
+			if ( sizeof($data) != 0 ) {
+
+				$result = $model->list($data[0]);
+
+				if ( !is_array($result) ) {
+					header("location: ../");
+					return;
+				}
+
+				$html = str_replace("{title}",$result["post_title"],$html);
+				$html = str_replace("{content}",$result["post_content"],$html);
+				$html = str_replace("{content}",$result["post_content"],$html);
+				$html = str_replace("{author}",$result["user_name"],$html);
+				$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+				
+				echo $html;
+				return;
+				
+			}
+
 			$result = $model->listViews();
 			
 			$content = "";
@@ -38,7 +65,7 @@ class CommonController {
 				
 				for ( $i = 0 ; $i < sizeof($result) ; $i++ ) {
 					
-					$content .= '<section class="post">
+					$content .= '<section class="post" onclick="window.location.href = \'{include_path}/common/' . $result[$i]["post_id"] . '\'">
 					<header class="post__header">
 					<p>
 					' . $result[$i]["post_title"] . '
@@ -59,6 +86,7 @@ class CommonController {
 			}
 			
 			$html = str_replace("{content}",$content,$html);
+			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
 			echo $html;
 
@@ -131,7 +159,7 @@ class CommonController {
 				
 				for ( $i = 0 ; $i < sizeof($result) ; $i++ ) {
 	
-					$content .= '<section class="post">
+					$content .= '<section class="post" onclick="window.location.href = \'{include_path}/common/recentes/' . $result[$i]["post_id"] . '\'">
 						<header class="post__header">
 							<p>
 							' . $result[$i]["post_title"] . '
@@ -149,10 +177,12 @@ class CommonController {
 	
 				}
 
+				
 			}
-
-
+			
+			
 			$html = str_replace("{content}",$content,$html);
+			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
 			echo $html;
 
