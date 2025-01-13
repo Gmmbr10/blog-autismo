@@ -6,13 +6,37 @@
 		</a>
 	</figure>
 
-  <div></div>
-
 	<nav class="navbar">
 
 		<a href="{include_path}/common" class="navbar__link {inicio}">Postagens mais visualizadas</a>
 		<a href="{include_path}/common/recentes" class="navbar__link {recentes}">Postagens recentes</a>
 		<a href="{include_path}/common/criar" class="navbar__link {criar_postagem}">Criar postagem</a>
+		
+	</nav>
+
+	<nav class="perfil">
+
+		<img src="{include_path}/public/assets/imgs/profile/default.png" class="perfil__img">
+
+		<ul class="perfil__links" >
+
+			<li>
+				<a href="{include_path}/common/editar" class="perfil__link">
+					Editar perfil
+				</a>
+			</li>
+			<li>
+				<a href="{include_path}/common/publishs" class="perfil__link">
+					Minhas publicações
+				</a>
+			</li>
+			<li>
+				<a href="{include_path}/logout" class="perfil__link--warning">
+					Sair
+				</a>
+			</li>
+			
+		</ul>
 		
 	</nav>
 

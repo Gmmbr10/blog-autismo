@@ -2,7 +2,7 @@
     width: 64px;
 }
 
-.btn {
+.btn,.btn--warning {
     cursor: pointer;
     height: max-content;
     text-align: center;
@@ -16,6 +16,12 @@
     border: 2px solid var(--primary);
 
     font-weight: bold;
+}
+
+.btn--warning {
+    background-color: var(--error-font);
+    color: var(--light);
+    border-color: var(--error-font);
 }
 
 .btn--outline {

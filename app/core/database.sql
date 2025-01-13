@@ -30,3 +30,11 @@ create table if not exists reviews (
   primary key(review_id),
   foreign key(review_postId) references posts(post_id) on delete cascade
 );
+
+create table if not exists admins (
+  admin_id int auto_increment not null,
+  admin_name varchar(150) not null,
+  admin_email varchar(255) not null,
+  admin_password varchar(255) not null,
+  primary key(admin_id)
+);
