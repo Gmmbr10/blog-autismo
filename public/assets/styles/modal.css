@@ -1,5 +1,5 @@
 .modal::backdrop {
-    background-color: rgba(0,0,0,.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal {
@@ -28,7 +28,7 @@
   border-radius: 100%;
   display: grid;
   place-content: center;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
 .modal__close:hover {
@@ -47,4 +47,14 @@
 .modal__header {
   font-size: 20pt;
   font-weight: bold;
+}
+
+.modal__container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  h3 {
+    margin-top: 24px;
+  }
 }
