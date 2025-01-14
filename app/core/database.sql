@@ -26,7 +26,7 @@ create table if not exists reviews (
   review_id int auto_increment not null,
   review_postId int not null,
   review_auth tinyint not null default(0),
-  review_message text not null,
+  review_message text,
   primary key(review_id),
   foreign key(review_postId) references posts(post_id) on delete cascade
 );

@@ -63,3 +63,9 @@
     font-size: 12pt;
     cursor: pointer;
 }
+
+.box {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}

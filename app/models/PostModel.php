@@ -27,8 +27,8 @@ class PostModel extends Model {
   public function listViews()
   {
 
-    // $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where review_auth = 1";
-    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id order by posts.post_countView desc";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where review_auth = 1 order by post_countView desc";
+    // $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id order by posts.post_countView desc";
     $select = $this->getConnection()->prepare($query);
     $select->execute();
 
@@ -48,8 +48,8 @@ class PostModel extends Model {
   public function listPublish()
   {
 
-    // $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where review_auth = 1";
-    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id order by posts.post_id desc";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where review_auth = 1 order by posts.post_id desc";
+    // $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id order by posts.post_id desc";
     $select = $this->getConnection()->prepare($query);
     $select->execute();
 

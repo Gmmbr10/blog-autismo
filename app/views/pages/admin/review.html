@@ -47,9 +47,11 @@
             
                   </section>
 
-                <form>
+                <form id="aprove_form" onsubmit="return false;" class="box">
 
-                    <button type="submit" name="aprovar" value="aprove" class="btn btn--radius-none w-100">Aprovar</button>
+                  <input type="hidden" name="id" value="{id}" id="post_id">
+
+                    <button onclick="aprovar()" class="btn btn--radius-none w-100">Aprovar</button>
 
                     <section id="content" class="form__box">
                         <label class="form__label" for="#">Correções</label>
@@ -61,7 +63,7 @@
                         <span class="error"></span>
                       </section>
                     
-                    <button type="submit" name="reprovar" class="btn--warning btn--radius-none w-100">Reprovar</button>
+                    <button type="submit" name="reprovar" onclick="reprovar()" class="btn--warning btn--radius-none w-100">Reprovar</button>
                     
                 </form>
                 
@@ -72,6 +74,26 @@
     </main>
 
     {component_footer}
+
+    <script>
+      function aprovar() {
+
+        const postId = { postId: document.getElementById("post_id").value};
+        
+        const ajax = new XMLHttpRequest();
+
+        ajax.onload = () => {
+          if ( ajax.status == 202 ) {
+            window.location.href = "{include_path}/admin/review";
+          }
+        }
+
+        ajax.open("POST","{include_path}/api/admin/aprove",true);
+        ajax.send(JSON.stringify(postId));
+        
+      }
+    </script>
+
     <script type="module">
         import {
           ClassicEditor,
@@ -98,6 +120,6 @@
           })
           .then( /* ... */)
           .catch( /* ... */);
-      </script>
+    </script>
   </body>
 </html>

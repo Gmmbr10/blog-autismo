@@ -87,6 +87,7 @@ class ReviewController
 		$html = str_replace("{content}",$result["post_content"],$html);
 		$html = str_replace("{content}",$result["post_content"],$html);
 		$html = str_replace("{author}",$result["user_name"],$html);
+		$html = str_replace("{id}",$result["post_id"],$html);
 		
         $html = str_replace("{include_path}", INCLUDE_PATH, $html);
 		echo $html;
