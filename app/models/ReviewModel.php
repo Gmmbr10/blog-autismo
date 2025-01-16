@@ -9,7 +9,7 @@ class ReviewModel extends Model {
         
         if ( $reviewExists != false ) {
 
-            $query = "UPDATE reviews SET review_auth = 1 WHERE review_id = :review";
+            $query = "UPDATE reviews SET review_auth = 1,review_message='' WHERE review_id = :review";
             $aprove = $this->getConnection()->prepare($query);
             $aprove->bindParam(":review",$reviewExists["review_id"],PDO::PARAM_INT);
             $aprove->execute();
@@ -50,4 +50,37 @@ class ReviewModel extends Model {
         
     }
     
+    public function reprove(array $data)
+    {
+
+        $reviewExists = $this->reviewExists($data["postId"]);
+        
+        if ( $reviewExists != false ) {
+
+            $query = "UPDATE reviews SET review_auth = 2,review_message=:msg WHERE review_id = :review";
+            $aprove = $this->getConnection()->prepare($query);
+            $aprove->bindParam(":review",$reviewExists["review_id"],PDO::PARAM_INT);
+            $aprove->bindParam(":msg",$data["msg"],PDO::PARAM_STR);
+            $aprove->execute();
+            
+            if ( $aprove->rowCount() == 0 ) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        $query = "INSERT INTO reviews ( review_postId , review_auth , review_message ) VALUES ( :post , 2 , :msg )";
+        $aprove = $this->getConnection()->prepare($query);
+        $aprove->bindParam(":post",$data["postId"],PDO::PARAM_INT);
+        $aprove->bindParam(":msg",$data["msg"],PDO::PARAM_STR);
+        $aprove->execute();
+
+        if ( $aprove->rowCount() == 0 ) {
+            return false;
+        }
+
+        return true;
+        
+    }
 }

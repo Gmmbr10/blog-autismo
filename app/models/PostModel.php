@@ -72,7 +72,7 @@ class PostModel extends Model {
     $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId WHERE post_id = :id AND review_auth = 1";
 
     if ( $isAdmin ) {
-      $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id WHERE post_id = :id";
+      $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id left join reviews on posts.post_id = reviews.review_postId WHERE post_id = :id";
     }
     
     $select = $this->getConnection()->prepare($query);
