@@ -82,7 +82,7 @@ class ReviewController
 		
 		require_once __DIR__ . "/../../models/PostModel.php";
 		$model = new PostModel();
-		$result = $model->list($data[0]);
+		$result = $model->list($data[0],true);
 
 		$html = str_replace("{title}",$result["post_title"],$html);
 		$html = str_replace("{content}",$result["post_content"],$html);
