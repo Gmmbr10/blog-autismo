@@ -98,6 +98,12 @@ class AdminController {
       return;
     }
 
+    if ( $admin_photo != "default.png" ) {
+      
+      unlink($img_path . $admin_photo);
+
+    }
+
     $_SESSION["user"]["admin_img"] = $file_name;
     http_response_code(202);
     $result = json_encode(["result" => $file_name]);
