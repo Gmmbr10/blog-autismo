@@ -67,6 +67,37 @@ class AdminController {
     
   }
 
+  public function reprove(array $dataUri)
+  {
+
+    $data = json_decode(file_get_contents("php://input"),true);
+
+    if ( empty($data["postId"]) || empty($data["msg"]) ) {
+      http_response_code(400);
+      $response = ["result"=>"Falta de dados"];
+      echo json_encode($response);
+      return;
+    }
+
+    require_once __DIR__ . "/../../core/Model.php";
+    require_once __DIR__ . "/../../models/ReviewModel.php";
+    $model = new ReviewModel();
+    $result = $model->reprove($data);
+
+    if ( !$result ) {
+      http_response_code(500);
+      $response = ["result" => "Houve um problema durante o processo"];
+      echo json_encode($response);
+      return;
+    }
+
+    http_response_code(202);
+    $response = ["result" => true];
+    echo json_encode($response);
+    return;
+    
+  }
+
   public function img(array $dataUri)
   {
 
