@@ -23,6 +23,7 @@ class ProfileController
         $html = str_replace("{user_email}", $_SESSION["user"]["admin_email"], $html);
         $html = str_replace("{user_img}", $_SESSION["user"]["admin_img"], $html);
 
+        $html = str_replace("{include_path}/common/profile", "{include_path}/admin/profile", $html);
         $html = str_replace("{link_api}", "{include_path}/api/admin", $html);
 
         $html = str_replace("{include_path}", INCLUDE_PATH, $html);

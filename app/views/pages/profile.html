@@ -120,6 +120,7 @@
     </main>
 
     {component_footer}
+    <script src="{include_path}/public/assets/scripts/createModal.js"></script>
     <script>
       function isValidFile(file) {
         // Verifica o tipo de arquivo (por exemplo somente imagens)
@@ -196,7 +197,11 @@
         const ajax = new XMLHttpRequest();
 
         ajax.onload = () => {
-          console.log(ajax);
+          if ( ajax.status == 202 ) {
+            createModal(true,"Imagem atualizada com sucesso!","{include_path}/common/profile");
+          } else {
+            createModal(false,"Erro: Não foi possível atualizar sua imagem","{include_path}/common/profile");
+          }
         };
 
         ajax.open("POST", "{link_api}/img", true);
@@ -259,7 +264,11 @@
 
         ajax.onload = () => {
 
-            console.log(ajax);
+          if ( ajax.status == 202 ) {
+            createModal(true,"Informações atualizadas com sucesso!","{include_path}/common/profile");
+          } else {
+            createModal(false,"Erro: Não foi possível atualizar suas informações","{include_path}/common/profile");
+          }
             
         };
         
@@ -334,7 +343,11 @@
 
         ajax.onload = () => {
 
-            console.log(ajax);
+          if ( ajax.status == 202 ) {
+            createModal(true,"Senha atualizada com sucesso!","{include_path}/common/profile");
+          } else {
+            createModal(false,"Erro: Não foi possível atualizar sua senha","{include_path}/common/profile");
+          }
             
         };
         

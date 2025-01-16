@@ -22,6 +22,11 @@ class AdminController
 		return;
 	}
 
+	if ( isset($_SESSION["user"]["user_id"]) ) {
+		header("location: " . INCLUDE_PATH . "/common");
+		return;
+	}
+
     $controller = ucfirst($url[0]) . "Controller";
 
 	if ( !file_exists( __DIR__ . "/admin/" . $controller . ".php") ) {

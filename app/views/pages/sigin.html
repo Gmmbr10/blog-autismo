@@ -178,7 +178,8 @@
 
       </main>
     </dialog>
-
+    
+    <script src="{include_path}/public/assets/scripts/createModal.js"></script>
     <script src="{include_path}/public/assets/scripts/viewPassword.js"></script>
     <script>
       const form = document.getElementById("sigin");
@@ -245,6 +246,9 @@
             email.querySelector("input").value = "";
             senha.querySelector("input").value = "";
             confirmar_senha.querySelector("input").value = "";
+            createModal(true,"Usuário registrado com sucesso!","{include_path}/login");
+          } else {
+            createModal(true,"Erro: Usuário não cadastrado","{include_path}/sigin");
           }
         };
 

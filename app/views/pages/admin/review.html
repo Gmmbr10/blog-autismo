@@ -75,6 +75,7 @@
 
     {component_footer}
 
+    <script src="{include_path}/public/assets/scripts/createModal.js"></script>
     <script>
       function aprovar() {
 
@@ -84,7 +85,9 @@
 
         ajax.onload = () => {
           if ( ajax.status == 202 ) {
-            window.location.href = "{include_path}/admin/review";
+            createModal(true,"Postagem aprovada com sucesso!","{include_path}/admin/review");
+          } else {
+            createModal(false,"Erro: Não foi possível aprovar esta postagem.","{include_path}/admin/review");
           }
         }
 

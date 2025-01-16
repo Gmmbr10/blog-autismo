@@ -57,6 +57,8 @@
     </main>
 
     {component_footer}
+
+    <script src="{include_path}/public/assets/scripts/createModal.js"></script>
     <script>
 
       function cadastrarPostagem()
@@ -105,7 +107,9 @@
           ajax.onload = () => {
             console.log(ajax);
             if ( ajax.status == 201 ) {
-              window.location.href = "{include_path}/common/criar";
+              createModal(true,"Postagem registrada. Ela será analisada por um administrador, acompanhe em minhas postagens.","{include_path}/common/criar");
+            } else {
+              createModal(false,"Erro: Não foi possível registrar sua postagem","{include_path}/common/criar");
             }
           };
 

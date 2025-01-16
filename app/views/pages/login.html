@@ -61,6 +61,7 @@
 
     {component_footer}
 
+    <script src="{include_path}/public/assets/scripts/createModal.js"></script>
     <script src="{include_path}/public/assets/scripts/viewPassword.js"></script>
     <script>
       const form = document.getElementById("login");
@@ -100,9 +101,9 @@
 
         ajax.onload = () => {
           if ( ajax.status == 202 ) {
-            email.querySelector("input").value = "";
-            senha.querySelector("input").value = "";
-            window.location.href = "{include_path}/common";
+            createModal(true,"Bem-vindo!","{include_path}/common");
+          } else {
+            createModal(false,"Usuário não encontrado!","{include_path}/login");
           }
         };
 

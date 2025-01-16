@@ -1,4 +1,4 @@
-.modal::backdrop {
+.modal::backdrop,.modal_msg::backdrop {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
@@ -57,4 +57,29 @@
   h3 {
     margin-top: 24px;
   }
+}
+
+.modal_msg {
+  width: calc(100% - 48px);
+  max-width: 500px;
+  height: max-content;
+  max-height: 500px;
+  margin: auto;
+  position: relative;
+  border: none;
+  border-radius: 8px;
+  text-align: center;
+  padding: 48px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  i {
+    color: var(--primary);
+    font-size: 64pt;
+  }
+}
+
+.modal_msg__body {
+  font-weight: bold;
 }
