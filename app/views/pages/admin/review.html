@@ -4,17 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Blog autismo</title>
-    <link rel="stylesheet" href="{include_path}/public/assets/styles/admin.css" />
+    <link
+      rel="stylesheet"
+      href="{include_path}/public/assets/styles/admin.css"
+    />
     {script_style}
     <!-- editor de texto -->
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.css"
+    />
     <script type="importmap">
-        {
-          "imports": {
-              "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.js",
-              "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.0/"
-            }
+      {
+        "imports": {
+          "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.js",
+          "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.0/"
         }
+      }
     </script>
     <!-- fim do editor de texto -->
   </head>
@@ -25,51 +31,57 @@
       {component_navbar}
       <section class="container">
         <nav class="breadcumbs">
-            <a href="{include_path}/admin/review">Revisar postagens</a>
-            <p>
-                {title}
-            </p>
+          <a href="{include_path}/admin/review">Revisar postagens</a>
+          <p>{title}</p>
         </nav>
 
         <section>
-            <h2 class="title--2">{title}</h2>
-            
-            <section class="column-2">
+          <h2 class="title--2">{title}</h2>
 
-                <section class="text">
+          <section class="column-2">
+            <section class="text">
+              <section class="author">
+                <img
+                  src="{include_path}/public/assets/imgs/profile/{author_img}"
+                  class="author__img"
+                />
+                <p class="author__name">{author}</p>
+              </section>
 
-                    <section class="author">
-                      <img src="{include_path}/public/assets/imgs/profile/{author_img}" class="author__img">
-                      <p class="author__name">{author}</p>
-                    </section>
-            
-                    {content}
-            
-                  </section>
-
-                <form id="aprove_form" onsubmit="return false;" class="box">
-
-                  <input type="hidden" name="id" value="{id}" id="post_id">
-
-                    <button onclick="aprovar()" class="btn btn--radius-none w-100">Aprovar</button>
-
-                    <section id="content" class="form__box">
-                        <label class="form__label" for="#">Correções</label>
-              
-                        <section>
-                          <textarea name="#" id="editor" class="form__textarea" placeholder="Escreva as sugestões"></textarea>
-                        </section>
-              
-                        <span class="error"></span>
-                      </section>
-                    
-                    <button type="submit" name="reprovar" onclick="reprovar()" class="btn--warning btn--radius-none w-100">Reprovar</button>
-                    
-                </form>
-                
+              {content}
             </section>
+
+            <form id="aprove_form" onsubmit="return false;" class="box">
+              <input type="hidden" name="id" value="{id}" id="post_id" />
+
+              <button onclick="aprovar()" class="btn btn--radius-none w-100">
+                Aprovar
+              </button>
+
+              <section id="content" class="form__box">
+                <label class="form__label" for="#">Correções</label>
+
+                <section>
+                  <textarea
+                    name="#"
+                    id="editor"
+                    class="form__textarea"
+                    placeholder="Escreva as sugestões"
+                  ></textarea>
+                </section>
+
+                <span class="error"></span>
+              </section>
+
+              <button
+                onclick="reprovar()"
+                class="btn--warning btn--radius-none w-100"
+              >
+                Reprovar
+              </button>
+            </form>
+          </section>
         </section>
-        
       </section>
     </main>
 
@@ -78,51 +90,118 @@
     <script src="{include_path}/public/assets/scripts/createModal.js"></script>
     <script>
       function aprovar() {
+        const postId = { postId: document.getElementById("post_id").value };
 
-        const postId = { postId: document.getElementById("post_id").value};
-        
         const ajax = new XMLHttpRequest();
 
         ajax.onload = () => {
-          if ( ajax.status == 202 ) {
-            createModal(true,"Postagem aprovada com sucesso!","{include_path}/admin/review");
+          if (ajax.status == 202) {
+            createModal(
+              true,
+              "Postagem aprovada com sucesso!",
+              "{include_path}/admin/review"
+            );
           } else {
-            createModal(false,"Erro: Não foi possível aprovar esta postagem.","{include_path}/admin/review");
+            createModal(
+              false,
+              "Erro: Não foi possível aprovar esta postagem.",
+              "{include_path}/admin/review"
+            );
           }
-        }
+        };
 
-        ajax.open("POST","{include_path}/api/admin/aprove",true);
+        ajax.open("POST", "{include_path}/api/admin/aprove", true);
         ajax.send(JSON.stringify(postId));
-        
+      }
+
+      function reprovar() {
+        setTimeout(() => {
+          const postId = document.getElementById("post_id").value;
+          const correcoes = document.getElementById("content");
+
+          let error = 0;
+
+          const data = {
+            msg: correcoes.querySelector("textarea").value,
+            postId: postId,
+          };
+
+          if (data.msg == "") {
+            correcoes.querySelector("span.error").innerHTML =
+              "Detalhe as correções da postagem";
+            error++;
+          }
+
+          if (error != 0) {
+            setTimeout(() => {
+              correcoes.querySelector("span.error").innerHTML = "";
+            }, 3000);
+
+            return false;
+          }
+
+          const ajax = new XMLHttpRequest();
+
+          ajax.onload = () => {
+            if (ajax.status == 202) {
+              createModal(
+                true,
+                "Postagem reprovada com sucesso!",
+                "{include_path}/admin/review"
+              );
+            } else {
+              createModal(
+                false,
+                "Erro: Não foi possível reprovar esta postagem.",
+                "{include_path}/admin/review"
+              );
+            }
+          };
+
+          ajax.open("POST", "{include_path}/api/admin/reprove", true);
+          ajax.send(JSON.stringify(data));
+
+          return false;
+        }, 100);
       }
     </script>
-
     <script type="module">
-        import {
-          ClassicEditor,
-          Essentials,
-          Bold,
-          Italic,
-          Heading,
-          PasteFromOffice
-        } from 'ckeditor5';
-      
-        ClassicEditor
-          .create(document.querySelector('#editor'), {
-            plugins: [Essentials, Bold, Italic, Heading,PasteFromOffice],
-            toolbar: [
-              'heading','bold', 'italic'
-            ],
-            heading: {
-              options: [
-                  { model: 'paragraph', title: 'Parágrafo', class: 'ck-heading_paragraph' },
-                  { model: 'heading1', view: 'h1', title: 'Título 1', class: 'ck-heading_heading1' },
-                  { model: 'heading2', view: 'h2', title: 'Título 2', class: 'ck-heading_heading2' },
-              ]
-          }
-          })
-          .then( /* ... */)
-          .catch( /* ... */);
+      import {
+        ClassicEditor,
+        Essentials,
+        Bold,
+        Italic,
+        Heading,
+        PasteFromOffice,
+      } from "ckeditor5";
+
+      ClassicEditor.create(document.querySelector("#editor"), {
+        plugins: [Essentials, Bold, Italic, Heading, PasteFromOffice],
+        toolbar: ["heading", "bold", "italic"],
+        heading: {
+          options: [
+            {
+              model: "paragraph",
+              title: "Parágrafo",
+              class: "ck-heading_paragraph",
+            },
+            {
+              model: "heading1",
+              view: "h1",
+              title: "Título 1",
+              class: "ck-heading_heading1",
+            },
+            {
+              model: "heading2",
+              view: "h2",
+              title: "Título 2",
+              class: "ck-heading_heading2",
+            },
+          ],
+        },
+      })
+        .then(/* ... */)
+        .catch(/* ... */);
     </script>
   </body>
 </html>

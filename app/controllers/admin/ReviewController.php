@@ -34,7 +34,7 @@ class ReviewController
 
 			for ( $index = 0 ; $index < sizeof($result) ; $index++ ) {
 
-				if ( $result[$index]["review_auth"] == 1 ) {
+				if ( $result[$index]["review_auth"] == 1 || $result[$index]["review_auth"] == 2 ) {
 					continue;
 				}
 				
@@ -57,7 +57,10 @@ class ReviewController
 			}
 			
 		}
-		
+
+		if ( empty($content) ) {
+			$content = "Nenhuma postagem encontrada para revisão";
+		}
 		
 		$html = str_replace("{content}", $content, $html);
         $html = str_replace("{include_path}", INCLUDE_PATH, $html);
@@ -83,6 +86,11 @@ class ReviewController
 		require_once __DIR__ . "/../../models/PostModel.php";
 		$model = new PostModel();
 		$result = $model->list($data[0],true);
+
+		if ( $result["review_auth"] == 1 || $result["review_auth"] == 2 ) {
+			header("location:" . INCLUDE_PATH . "/admin/review");
+			return;
+		}
 
 		$html = str_replace("{title}",$result["post_title"],$html);
 		$html = str_replace("{content}",$result["post_content"],$html);
