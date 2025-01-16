@@ -40,7 +40,7 @@ class CommonController
 				$result = $model->list($data[0]);
 
 				if (!is_array($result)) {
-					header("location: ../");
+					header("location:".INCLUDE_PATH."/common");
 					return;
 				}
 
@@ -132,7 +132,7 @@ class CommonController
 				$result = $model->list($data[0]);
 
 				if (!is_array($result)) {
-					header("location: ../");
+					header("location:".INCLUDE_PATH."/common/recentes");
 					return;
 				}
 
