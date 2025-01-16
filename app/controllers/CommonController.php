@@ -1,12 +1,13 @@
 <?php
 
-class CommonController {
+class CommonController
+{
 
-  public function index(array $data)
+	public function index(array $data)
 	{
 
 		session_start();
-		
+
 		if (isset($_SESSION["user"])) {
 
 			$links = file_get_contents(__DIR__ . "/../views/components/style.html");
@@ -14,57 +15,57 @@ class CommonController {
 			$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
 			$html = file_get_contents(__DIR__ . "/../views/pages/user/home.html");
 
-			if ( sizeof($data) != 0 ) {
+			if (sizeof($data) != 0) {
 				$html = file_get_contents(__DIR__ . "/../views/pages/user/post.html");
 				$navbar = file_get_contents(__DIR__ . "/../views/components/navbar-recentes.html");
 				$html = str_replace("{component_navbar}", $navbar, $html);
 			}
-			
+
 			$header = str_replace("{inicio}", "navbar__link--active", $header);
 			$header = str_replace("{recentes}", "", $header);
 			$header = str_replace("{criar_postagem}", "", $header);
-			
+
 			$html = str_replace("{script_style}", $links, $html);
 			$html = str_replace("{component_header}", $header, $html);
 			$html = str_replace("{component_footer}", $footer, $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
 			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
-			
+
 			require_once __DIR__ . "/../core/Model.php";
 			require_once __DIR__ . "/../models/PostModel.php";
 			$model = new PostModel();
 
-			if ( sizeof($data) != 0 ) {
+			if (sizeof($data) != 0) {
 
 				$result = $model->list($data[0]);
 
-				if ( !is_array($result) ) {
+				if (!is_array($result)) {
 					header("location: ../");
 					return;
 				}
 
-				$html = str_replace("{title}",$result["post_title"],$html);
-				$html = str_replace("{content}",$result["post_content"],$html);
-				$html = str_replace("{content}",$result["post_content"],$html);
-				$html = str_replace("{author}",$result["user_name"],$html);
+				$html = str_replace("{title}", $result["post_title"], $html);
+				$html = str_replace("{content}", $result["post_content"], $html);
+				$html = str_replace("{content}", $result["post_content"], $html);
+				$html = str_replace("{author}", $result["user_name"], $html);
+				$html = str_replace("{author_img}", $result["user_img"], $html);
 				$html = str_replace("{include_path}", INCLUDE_PATH, $html);
-				
+
 				echo $html;
 				return;
-				
 			}
 
 			$result = $model->listViews();
-			
+
 			$content = "";
-			
-			if ( !is_array($result) ) {
-				
+
+			if (!is_array($result)) {
+
 				$content = "Nenhum registro encontrado";
-				
 			} else {
-				
-				for ( $i = 0 ; $i < sizeof($result) ; $i++ ) {
-					
+
+				for ($i = 0; $i < sizeof($result); $i++) {
+
 					$content .= '<section class="post" onclick="window.location.href = \'{include_path}/common/' . $result[$i]["post_id"] . '\'">
 					<header class="post__header">
 					<p>
@@ -73,19 +74,17 @@ class CommonController {
 					</header>
 					
 					<main class="post__content">
-					'. $result[$i]["post_content"] .'
+					' . $result[$i]["post_content"] . '
 					</main>
 					
 					<footer class="post__footer">
 					<p>' . $result[$i]["user_name"] . '</p>
 					</footer>
 					</section>';
-					
 				}
-				
 			}
-			
-			$html = str_replace("{content}",$content,$html);
+
+			$html = str_replace("{content}", $content, $html);
 			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
 			echo $html;
@@ -93,12 +92,12 @@ class CommonController {
 			return;
 		}
 
-    session_destroy();
+		session_destroy();
 
 		header("location: ./home");
 	}
 
-  public function recentes(array $data)
+	public function recentes(array $data)
 	{
 		session_start();
 
@@ -109,7 +108,7 @@ class CommonController {
 			$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
 			$html = file_get_contents(__DIR__ . "/../views/pages/user/newPosts.html");
 
-			if ( sizeof($data) != 0 ) {
+			if (sizeof($data) != 0) {
 				$html = file_get_contents(__DIR__ . "/../views/pages/user/post.html");
 				$navbar = file_get_contents(__DIR__ . "/../views/components/navbar-publish.html");
 				$html = str_replace("{component_navbar}", $navbar, $html);
@@ -118,7 +117,7 @@ class CommonController {
 			$header = str_replace("{inicio}", "", $header);
 			$header = str_replace("{recentes}", "navbar__link--active", $header);
 			$header = str_replace("{criar_postagem}", "", $header);
-			
+
 			$html = str_replace("{script_style}", $links, $html);
 			$html = str_replace("{component_header}", $header, $html);
 			$html = str_replace("{component_footer}", $footer, $html);
@@ -127,38 +126,38 @@ class CommonController {
 			require_once __DIR__ . "/../core/Model.php";
 			require_once __DIR__ . "/../models/PostModel.php";
 			$model = new PostModel();
-			
-			if ( sizeof($data) != 0 ) {
+
+			if (sizeof($data) != 0) {
 
 				$result = $model->list($data[0]);
 
-				if ( !is_array($result) ) {
+				if (!is_array($result)) {
 					header("location: ../");
 					return;
 				}
 
-				$html = str_replace("{title}",$result["post_title"],$html);
-				$html = str_replace("{content}",$result["post_content"],$html);
-				$html = str_replace("{content}",$result["post_content"],$html);
-				$html = str_replace("{author}",$result["user_name"],$html);
-				
+				$html = str_replace("{title}", $result["post_title"], $html);
+				$html = str_replace("{content}", $result["post_content"], $html);
+				$html = str_replace("{content}", $result["post_content"], $html);
+				$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+				$html = str_replace("{author_img}", $result["user_img"], $html);
+				$html = str_replace("{author}", $result["user_name"], $html);
+
 				echo $html;
 				return;
-				
 			}
 
 			$result = $model->listPublish();
 
 			$content = "";
 
-			if ( !is_array($result) ) {
-				
+			if (!is_array($result)) {
+
 				$content = "Nenhum registro encontrado";
-				
 			} else {
-				
-				for ( $i = 0 ; $i < sizeof($result) ; $i++ ) {
-	
+
+				for ($i = 0; $i < sizeof($result); $i++) {
+
 					$content .= '<section class="post" onclick="window.location.href = \'{include_path}/common/recentes/' . $result[$i]["post_id"] . '\'">
 						<header class="post__header">
 							<p>
@@ -167,21 +166,19 @@ class CommonController {
 						</header>
 	
 						<main class="post__content">
-							'. $result[$i]["post_content"] .'
+							' . $result[$i]["post_content"] . '
 						</main>
 	
 						<footer class="post__footer">
 							<p>' . $result[$i]["user_name"] . '</p>
 						</footer>
 					</section>';
-	
 				}
-
-				
 			}
-			
-			
-			$html = str_replace("{content}",$content,$html);
+
+
+			$html = str_replace("{content}", $content, $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
 			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
 			echo $html;
@@ -208,10 +205,11 @@ class CommonController {
 			$header = str_replace("{inicio}", "", $header);
 			$header = str_replace("{recentes}", "", $header);
 			$header = str_replace("{criar_postagem}", "navbar__link--active", $header);
-			
+
 			$html = str_replace("{script_style}", $links, $html);
 			$html = str_replace("{component_header}", $header, $html);
 			$html = str_replace("{component_footer}", $footer, $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
 			$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
 			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
@@ -225,4 +223,122 @@ class CommonController {
 		header("location: ../home");
 	}
 
+	public function publishs(array $data)
+	{
+
+		session_start();
+
+		if (isset($_SESSION["user"])) {
+
+			$links = file_get_contents(__DIR__ . "/../views/components/style.html");
+			$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
+			$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
+			$html = file_get_contents(__DIR__ . "/../views/pages/user/publishs.html");
+
+			$header = str_replace("{inicio}", "", $header);
+			$header = str_replace("{recentes}", "", $header);
+			$header = str_replace("{criar_postagem}", "", $header);
+
+			$html = str_replace("{script_style}", $links, $html);
+			$html = str_replace("{component_header}", $header, $html);
+			$html = str_replace("{component_footer}", $footer, $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+			$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
+
+			require_once __DIR__ . "/../core/Model.php";
+			require_once __DIR__ . "/../models/PostModel.php";
+			$model = new PostModel();
+			$result = $model->myPublishs($_SESSION["user"]["user_id"]);
+
+			$content = "";
+
+			if (!is_array($result)) {
+
+				$content = "Nenhuma postagem encontrada";
+			} else {
+
+				for ($i = 0; $i < sizeof($result); $i++) {
+
+					$situacao = "";
+
+					switch ($result[$i]["review_auth"]) {
+						case '1':
+							$situacao = '<span class="post--aprove" >Aprovado</span>';
+							break;
+						case '2':
+							$situacao = '<span class="post--reprove" >Reprovado</span>';
+							break;
+						default:
+							$situacao = '<span class="post--waiting" >Aguardando</span>';
+							break;
+					}
+
+					$content .= '<section class="post">
+						' . $situacao . '
+						<header class="post__header">
+							<p>
+							' . $result[$i]["post_title"] . '
+							</p>
+						</header>
+	
+						<main class="post__content">
+							' . $result[$i]["post_content"] . '
+						</main>
+	
+						<footer class="post__footer">
+							<p>' . $result[$i]["user_name"] . '</p>
+						</footer>
+					</section>';
+				}
+			}
+
+			$html = str_replace("{content}", $content, $html);
+			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+			echo $html;
+
+			return;
+		}
+
+		session_destroy();
+
+		header("location: ../home");
+	}
+
+	public function profile(array $data)
+	{
+
+		session_start();
+
+		if (isset($_SESSION["user"])) {
+
+			$links = file_get_contents(__DIR__ . "/../views/components/style.html");
+			$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
+			$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
+			$html = file_get_contents(__DIR__ . "/../views/pages/profile.html");
+
+			$header = str_replace("{inicio}", "", $header);
+			$header = str_replace("{recentes}", "", $header);
+			$header = str_replace("{criar_postagem}", "", $header);
+
+			$html = str_replace("{script_style}", $links, $html);
+			$html = str_replace("{component_header}", $header, $html);
+			$html = str_replace("{component_footer}", $footer, $html);
+			$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
+			$html = str_replace("{user_name}", $_SESSION["user"]["user_name"], $html);
+			$html = str_replace("{user_email}", $_SESSION["user"]["user_email"], $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+
+			$html = str_replace("{link_api}", "{include_path}/api/user", $html);
+
+			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+
+			echo $html;
+
+			return;
+		}
+
+		session_destroy();
+
+		header("location: ../home");
+	}
 }

@@ -18,6 +18,7 @@ class ReviewController
 		$html = str_replace( "{component_header}" , $header , $html );
 		$html = str_replace( "{component_navbar}" , $navbar , $html );
 		$html = str_replace( "{component_footer}" , $footer , $html );
+		$html = str_replace("{user_img}", $_SESSION["user"]["admin_img"], $html);
 		
         require_once(__DIR__ . "/../../models/AdminModel.php");
         $model = new AdminModel();
@@ -87,7 +88,9 @@ class ReviewController
 		$html = str_replace("{content}",$result["post_content"],$html);
 		$html = str_replace("{content}",$result["post_content"],$html);
 		$html = str_replace("{author}",$result["user_name"],$html);
+		$html = str_replace("{author_img}",$result["user_img"],$html);
 		$html = str_replace("{id}",$result["post_id"],$html);
+		$html = str_replace("{user_img}", $_SESSION["user"]["admin_img"], $html);
 		
         $html = str_replace("{include_path}", INCLUDE_PATH, $html);
 		echo $html;

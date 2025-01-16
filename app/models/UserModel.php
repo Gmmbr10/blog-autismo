@@ -68,10 +68,8 @@ class UserModel extends Model {
     }
 
     $userData = [ "name" => $data["name"] , "email" => $data["email"] , "id" => $data["userId"] ];
-    $userData["password"] = password_hash($data["password"],PASSWORD_BCRYPT);
 
     $query = "update users set user_name=:name,user_email=:email where user_id = :id";
-
     $update = $this->getConnection()->prepare($query);
     $update->bindParam(":id",$userData["id"],PDO::PARAM_INT);
     $update->bindParam(":name",$userData["name"],PDO::PARAM_STR);
@@ -101,6 +99,42 @@ class UserModel extends Model {
 
     return true;
     
+  }
+
+  public function updatePhoto(int $user_id, string $photo_name)
+  {
+
+    $query = "UPDATE users SET user_img=:img WHERE user_id = :id";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":img",$photo_name,PDO::PARAM_STR);
+    $update->bindParam(":id",$user_id,PDO::PARAM_INT);
+    $update->execute();
+
+    if ( $update->rowCount() == 0 ) {
+      return false;
+    }
+
+    return true;
+    
+  }
+
+  public function updatePassword(int $user_id,$password)
+  {
+
+    $password = password_hash($password,PASSWORD_BCRYPT);
+
+    $query = "UPDATE users SET user_password=:pasword WHERE user_id = :id";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":pasword",$password,PDO::PARAM_STR);
+    $update->bindParam(":id",$user_id,PDO::PARAM_INT);
+    $update->execute();
+
+    if ( $update->rowCount() == 0 ) {
+      return false;
+    }
+
+    return true;
+
   }
   
 }

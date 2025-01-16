@@ -88,6 +88,7 @@ class BlogController
 		$html = str_replace("{content}", $result["post_content"], $html);
 		$html = str_replace("{content}", $result["post_content"], $html);
 		$html = str_replace("{author}", $result["user_name"], $html);
+		$html = str_replace("{author_img}",$result["user_img"],$html);
 
 		$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 		echo $html;

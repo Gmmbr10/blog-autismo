@@ -16,6 +16,7 @@ class HomeController
 		$html = str_replace( "{component_header}" , $header , $html );
 		$html = str_replace( "{component_navbar}" , $navbar , $html );
 		$html = str_replace( "{component_footer}" , $footer , $html );
+		$html = str_replace("{user_img}", $_SESSION["user"]["admin_img"], $html);
 		$html = str_replace( "{include_path}" , INCLUDE_PATH , $html );
 
 		echo $html;

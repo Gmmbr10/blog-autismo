@@ -1,0 +1,34 @@
+<header class="header">
+  <figure>
+    <a href="{include_path}/home">
+      <img
+        src="{include_path}/public/assets/imgs/logo.svg"
+        alt="logo"
+        class="logo"
+      />
+    </a>
+  </figure>
+
+  <nav class="navbar">
+    <a class="navbar__link" href="{include_path}/admin/home">Início</a>
+    <a class="navbar__link" href="{include_path}/admin/review">Revisar</a>
+  </nav>
+
+  <nav class="perfil">
+    <img
+      src="{include_path}/public/assets/imgs/profile/{user_img}"
+      class="perfil__img"
+    />
+
+    <ul class="perfil__links">
+      <li>
+        <a href="{include_path}/admin/profile" class="perfil__link">
+          Editar perfil
+        </a>
+      </li>
+      <li>
+        <a href="{include_path}/logout" class="perfil__link--warning"> Sair </a>
+      </li>
+    </ul>
+  </nav>
+</header>

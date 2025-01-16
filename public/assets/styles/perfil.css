@@ -4,6 +4,8 @@
 
 .perfil__img {
     width: 48px;
+    height: 48px;
+    object-fit: cover;
     border-radius: 1000px;
     cursor: pointer;
     transition: all .2s;
@@ -61,4 +63,10 @@
 .perfil__link--warning:hover {
     color: var(--dark);
     background: var(--error);
+}
+
+.perfil__img--big {
+    width: 256px;
+    height: 256px;
+    object-fit: cover;
 }
