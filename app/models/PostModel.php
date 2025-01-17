@@ -100,6 +100,11 @@ class PostModel extends Model {
 
     if ( $isAdmin ) {
       $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id left join reviews on posts.post_id = reviews.review_postId WHERE post_id = :id";
+    } else {
+      session_start();
+      require_once(__DIR__."/ViewModel.php");
+      $views = new ViewModel();
+      $views->add($postId,$_SESSION["user"]["user_id"]);
     }
     
     $select = $this->getConnection()->prepare($query);

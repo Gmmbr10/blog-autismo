@@ -31,6 +31,14 @@ create table if not exists reviews (
   foreign key(review_postId) references posts(post_id) on delete cascade
 );
 
+create table if not exists views (
+  view_postId int not null,
+  view_userId int not null,
+  primary key(view_postId,view_userId),
+  foreign key(view_postId) references posts(post_id) on delete cascade,
+  foreign key(view_userId) references users(user_id) on delete cascade
+);
+
 create table if not exists admins (
   admin_id int auto_increment not null,
   admin_name varchar(150) not null,
@@ -38,3 +46,8 @@ create table if not exists admins (
   admin_password varchar(255) not null,
   primary key(admin_id)
 );
+
+insert into admins
+(admin_name,admin_email,admin_password)
+values
+("Admin01","admin@gmail.com","$2y$10$Z00y4ueUTvZLl4/1RIGTy.5FPLMmf6e5Ka/N9b6bthzkEXelHgeVy");
