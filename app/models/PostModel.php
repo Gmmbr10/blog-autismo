@@ -117,7 +117,7 @@ class PostModel extends Model {
   public function myPublishs(int $userId)
   {
 
-    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id left join reviews on posts.post_id = reviews.review_postId WHERE post_userId = :userId order by post_id asc";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id left join reviews on posts.post_id = reviews.review_postId WHERE post_userId = :userId order by review_auth desc";
     $select = $this->getConnection()->prepare($query);
     $select->bindParam(":userId",$userId,PDO::PARAM_INT);
     $select->execute();
