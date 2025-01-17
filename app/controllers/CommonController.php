@@ -260,6 +260,7 @@ class CommonController
 				for ($i = 0; $i < sizeof($result); $i++) {
 
 					$situacao = "";
+					$redirect = "";
 
 					switch ($result[$i]["review_auth"]) {
 						case '1':
@@ -267,13 +268,14 @@ class CommonController
 							break;
 						case '2':
 							$situacao = '<span class="post--reprove" >Reprovado</span>';
+							$redirect = 'onclick="window.location.href = \'{include_path}/common/edit/'. $result[$i]["post_id"] .'\'"';
 							break;
 						default:
 							$situacao = '<span class="post--waiting" >Aguardando</span>';
 							break;
 					}
 
-					$content .= '<section class="post">
+					$content .= '<section class="post" '. $redirect .'>
 						' . $situacao . '
 						<header class="post__header">
 							<p>
@@ -330,6 +332,52 @@ class CommonController
 
 			$html = str_replace("{link_api}", "{include_path}/api/user", $html);
 
+			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+
+			echo $html;
+
+			return;
+		}
+
+		session_destroy();
+
+		header("location: ../home");
+	}
+
+	public function edit(array $data)
+	{
+		session_start();
+
+		if (isset($_SESSION["user"])) {
+
+			$links = file_get_contents(__DIR__ . "/../views/components/style.html");
+			$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
+			$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
+			$html = file_get_contents(__DIR__ . "/../views/pages/user/editReprove.html");
+
+			$header = str_replace("{inicio}", "", $header);
+			$header = str_replace("{recentes}", "", $header);
+			$header = str_replace("{criar_postagem}", "", $header);
+
+			require_once __DIR__ . "/../core/Model.php";
+			require_once __DIR__ . "/../models/PostModel.php";
+			$model = new PostModel();
+			$result = $model->myPublish($_SESSION["user"]["user_id"],$data[0]);
+
+			if ( $result == false ) {
+				header("location: " . INCLUDE_PATH . "/common/publishs");
+				return;
+			}
+
+			$html = str_replace("{script_style}", $links, $html);
+			$html = str_replace("{component_header}", $header, $html);
+			$html = str_replace("{component_footer}", $footer, $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+			$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
+			$html = str_replace("{postId}", $result["post_id"], $html);
+			$html = str_replace("{content}", $result["post_content"], $html);
+			$html = str_replace("{title}", $result["post_title"], $html);
+			$html = str_replace("{msg}", $result["review_message"], $html);
 			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
 			echo $html;

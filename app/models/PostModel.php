@@ -24,6 +24,33 @@ class PostModel extends Model {
     
   }
 
+  public function update(array $data)
+  {
+
+    if ( empty($data["title"]) || empty($data["content"]) || empty($data["postId"]) ) {
+      return false;
+    }
+
+    $query = "UPDATE posts SET post_title=:title,post_content=:content WHERE post_id = :postId";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":title",$data["title"],PDO::PARAM_STR);
+    $update->bindParam(":content",$data["content"],PDO::PARAM_STR);
+    $update->bindParam(":postId",$data["postId"],PDO::PARAM_INT);
+    $update->execute();
+
+    if ( $update->rowCount() == 0 ) {
+      return false;
+    }
+
+    $query = "UPDATE reviews SET review_auth=0,review_message='' WHERE review_postId = :postId";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":postId",$data["postId"],PDO::PARAM_INT);
+    $update->execute();
+
+    return true;
+    
+  }
+
   public function listViews()
   {
 
@@ -100,6 +127,23 @@ class PostModel extends Model {
     }
 
     return $select->fetchAll();
+
+  }
+
+  public function myPublish(int $userId, int $postId)
+  {
+
+    $query = "SELECT * FROM posts inner join reviews on posts.post_id = reviews.review_postId WHERE post_id = :postId AND post_userId = :userId AND review_auth = 2 limit 1";
+    $select = $this->getConnection()->prepare($query);
+    $select->bindParam(":userId",$userId,PDO::PARAM_INT);
+    $select->bindParam(":postId",$postId,PDO::PARAM_INT);
+    $select->execute();
+
+    if ( $select->rowCount() == 0 ) {
+      return false;
+    }
+
+    return $select->fetch();
 
   }
   
