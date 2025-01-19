@@ -84,6 +84,29 @@ class UserModel extends Model {
     
   }
 
+  public function type(array $data)
+  {
+
+    if ( empty($data["userId"]) || empty($data["type"]) ) {
+      return false;
+    }
+
+    $userData = [ "id" => $data["userId"] , "type" => $data["type"] ];
+
+    $query = "update users set user_type=:type where user_id = :id";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":id",$userData["id"],PDO::PARAM_INT);
+    $update->bindParam(":type",$userData["type"],PDO::PARAM_STR);
+    $update->execute();
+
+    if ( $update->rowCount() == 0 ) {
+      return false;
+    }
+
+    return true;
+    
+  }
+
   public function delete(int $userId)
   {
 

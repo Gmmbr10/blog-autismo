@@ -18,6 +18,11 @@ class CommonController
 
 		session_start();
 
+		if ( empty($_SESSION["user"]["user_type"]) ) {
+			header("location:" . INCLUDE_PATH . "/common/type");
+			return;
+		}
+
 		$links = file_get_contents(__DIR__ . "/../views/components/style.html");
 		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
 		$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
@@ -56,6 +61,7 @@ class CommonController
 			$html = str_replace("{content}", $result["post_content"], $html);
 			$html = str_replace("{content}", $result["post_content"], $html);
 			$html = str_replace("{author}", $result["user_name"], $html);
+			$html = str_replace("{type}", $result["user_type"], $html);
 			$html = str_replace("{author_img}", $result["user_img"], $html);
 			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
@@ -104,6 +110,11 @@ class CommonController
 	{
 		session_start();
 
+		if ( empty($_SESSION["user"]["user_type"]) ) {
+			header("location:" . INCLUDE_PATH . "/common/type");
+			return;
+		}
+
 		$links = file_get_contents(__DIR__ . "/../views/components/style.html");
 		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
 		$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
@@ -142,6 +153,7 @@ class CommonController
 			$html = str_replace("{content}", $result["post_content"], $html);
 			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
 			$html = str_replace("{author_img}", $result["user_img"], $html);
+			$html = str_replace("{type}", $result["user_type"], $html);
 			$html = str_replace("{author}", $result["user_name"], $html);
 
 			echo $html;
@@ -191,6 +203,11 @@ class CommonController
 	{
 		session_start();
 
+		if ( empty($_SESSION["user"]["user_type"]) ) {
+			header("location:" . INCLUDE_PATH . "/common/type");
+			return;
+		}
+
 		$links = file_get_contents(__DIR__ . "/../views/components/style.html");
 		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
 		$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
@@ -216,6 +233,11 @@ class CommonController
 	{
 
 		session_start();
+
+		if ( empty($_SESSION["user"]["user_type"]) ) {
+			header("location:" . INCLUDE_PATH . "/common/type");
+			return;
+		}
 
 		$links = file_get_contents(__DIR__ . "/../views/components/style.html");
 		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
@@ -293,6 +315,11 @@ class CommonController
 
 		session_start();
 
+		if ( empty($_SESSION["user"]["user_type"]) ) {
+			header("location:" . INCLUDE_PATH . "/common/type");
+			return;
+		}
+
 		$links = file_get_contents(__DIR__ . "/../views/components/style.html");
 		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
 		$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
@@ -322,6 +349,11 @@ class CommonController
 	public function edit(array $data)
 	{
 		session_start();
+
+		if ( empty($_SESSION["user"]["user_type"]) ) {
+			header("location:" . INCLUDE_PATH . "/common/type");
+			return;
+		}
 
 		$links = file_get_contents(__DIR__ . "/../views/components/style.html");
 		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
@@ -356,5 +388,36 @@ class CommonController
 		echo $html;
 
 		return;
+	}
+
+	public function type(array $data)
+	{
+
+		session_start();
+
+		if ( !empty($_SESSION["user"]["user_type"]) ) {
+			header("location:".INCLUDE_PATH."/common");
+			return;
+		}
+
+		$links = file_get_contents(__DIR__ . "/../views/components/style.html");
+		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
+		$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
+		$html = file_get_contents(__DIR__ . "/../views/pages/user/type.html");
+
+		$header = str_replace("{inicio}", "", $header);
+		$header = str_replace("{recentes}", "", $header);
+		$header = str_replace("{criar_postagem}", "", $header);
+		$html = str_replace("{script_style}", $links, $html);
+		$html = str_replace("{component_header}", $header, $html);
+		$html = str_replace("{component_footer}", $footer, $html);
+		$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+		$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
+		$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+
+		echo $html;
+
+		return;
+		
 	}
 }

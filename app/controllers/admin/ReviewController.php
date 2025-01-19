@@ -97,6 +97,7 @@ class ReviewController
 		$html = str_replace("{content}",$result["post_content"],$html);
 		$html = str_replace("{author}",$result["user_name"],$html);
 		$html = str_replace("{author_img}",$result["user_img"],$html);
+		$html = str_replace("{type}",$result["user_type"],$html);
 		$html = str_replace("{id}",$result["post_id"],$html);
 		$html = str_replace("{user_img}", $_SESSION["user"]["admin_img"], $html);
 		

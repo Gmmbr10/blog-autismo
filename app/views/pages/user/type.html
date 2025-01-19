@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog autismo</title>
+  {script_style}
+</head>
+<body>
+
+  {component_header}
+
+  <main class="container  container--vertical-center container--horizontal-center">
+
+    <form action="#" method="POST" onsubmit="verificar();return false" class="column-1 column--vertical-center column--horizontal-center form form--large">
+
+        <h2 class="title--2">Sou um(a):</h2>
+
+        <label for="pro" class="radio">
+
+            <input type="radio" name="type" id="pro" value="Professor" class="radio__indicator">
+            <section class="radio__text">
+                <p>
+                    Professor(a)
+                </p>
+                <p>
+                    Você é um profissional da educação que busca aprimorar suas práticas e compartilhar seu conhecimento? Junte-se a nós e faça a diferença na vida de crianças com autismo! Compartilhe suas experiências, estratégias de ensino e inspire outros profissionais.
+                </p>
+            </section>
+
+        </label>
+        <label for="pro_med" class="radio">
+            
+            <input type="radio" name="type" id="pro_med" value="Professor(a) Mediador(a)" class="radio__indicator">
+            <section class="radio__text">
+                <p>
+                    Professor(a) mediador(a)
+                </p>
+                <p>
+                    Quer construir pontes entre a escola, a família e a comunidade? Seja um mediador(a) e promova a inclusão e o bem-estar de todos! Compartilhe informações relevantes e fortaleça a comunicação entre os diferentes atores envolvidos.
+                </p>
+            </section>
+
+        </label>
+        <label for="res" class="radio">
+
+            <input type="radio" name="type" id="res" value="Responsável" class="radio__indicator">
+            <section class="radio__text">
+                <p>
+                    Responsável
+                </p>
+                <p>
+                    Você é pai, mãe ou responsável por uma criança com autismo? Encontre aqui uma comunidade acolhedora e informações valiosas para te auxiliar nessa jornada. Compartilhe suas experiências e conquistas.
+                </p>
+            </section>
+
+        </label>
+
+        <span id="error" class="error"></span>
+
+        <button type="submit" class="btn btn--radius-none">Registrar</button>
+        
+    </form>
+    
+  </main>
+
+  {component_footer}
+
+  <script src="{include_path}/public/assets/scripts/createModal.js"></script>
+  <script>
+
+    function verificar()
+    {
+
+        const selection_button = document.querySelector("input[type='radio']:checked");
+
+        let error = 0;
+
+        if ( !selection_button ) {
+            document.getElementById("error").innerHTML = "Selecione uma opção!";
+            error++
+        }
+
+        if ( error != 0 ) {
+
+            setTimeout(()=>{
+                document.getElementById("error").innerHTML = "";
+            },3000);
+
+            return;
+
+        }
+
+        const ajax = new XMLHttpRequest();
+
+        ajax.onload = () => {
+            if ( ajax.status == 202 ) {
+                createModal(true,"Registrado com sucesso","{include_path}/common");
+            } else {
+                createModal(false,"Erro: Não foi possível registrar esta informação. Tente novamente","{include_path}/common");
+            }
+        }
+
+        ajax.open("POST","{include_path}/api/user/type",true);
+        ajax.send(JSON.stringify({type: selection_button.value}));
+        
+    }
+    
+  </script>
+  
+</body>
+</html>

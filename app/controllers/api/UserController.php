@@ -119,6 +119,39 @@ class UserController
     return;
   }
 
+  public function type(array $dataUri)
+  {
+
+    $data = json_decode(file_get_contents("php://input"),true);
+
+    if ( $data["type"] != "Professor" && $data["type"] != "Professor(a) Mediador(a)" && $data["type"] != "Responsável" ) {
+      http_response_code(400);
+      $response = ["result"=>"Dado não é válido"];
+      echo json_encode($response);
+      return;
+    }
+
+    session_start();
+    $user_id = $_SESSION["user"]["user_id"];
+    require_once __DIR__ . "/../../models/UserModel.php";
+    $model = new UserModel();
+    $result = $model->type( [ "userId" => $user_id , "type" => $data["type"] ] );
+
+    if ( $result == false ) {
+      http_response_code(500);
+      $result = json_encode(["result" => "Registro não realizado"]);
+      echo $result;
+      return;
+    }
+
+    $_SESSION["user"]["user_type"] = $data["type"];
+    
+    http_response_code(202);
+    $response = ["result"=>"Sucesso"];
+    echo json_encode($response);
+    return;
+  }
+
   public function update(array $dataUri)
   {
     session_start();

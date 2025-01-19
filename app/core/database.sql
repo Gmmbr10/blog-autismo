@@ -8,6 +8,7 @@ create table if not exists users (
   user_email varchar(255) not null,
   user_password varchar(255) not null,
   user_active tinyint not null default(1),
+  user_type varchar(50),
   primary key(user_id)
 );
 
