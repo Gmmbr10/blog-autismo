@@ -7,8 +7,11 @@ create table if not exists users (
   user_name varchar(150) not null,
   user_email varchar(255) not null,
   user_password varchar(255) not null,
+  user_img varchar(255) not null default("default.png"),
   user_active tinyint not null default(1),
   user_type varchar(50),
+  user_created_at datetime not null default(now()),
+  user_updated_at datetime not null default(now()) on update now(),
   primary key(user_id)
 );
 
@@ -19,6 +22,8 @@ create table if not exists posts (
   post_userId int not null,
   post_countView int not null default(0),
   post_active tinyint not null default(1),
+  post_created_at datetime not null default(now()),
+  post_updated_at datetime not null default(now()) on update now(),
   primary key(post_id),
   foreign key(post_userId) references users(user_id) on delete cascade
 );
@@ -28,6 +33,8 @@ create table if not exists reviews (
   review_postId int not null,
   review_auth tinyint not null default(0),
   review_message text,
+  review_created_at datetime not null default(now()),
+  review_updated_at datetime not null default(now()) on update now(),
   primary key(review_id),
   foreign key(review_postId) references posts(post_id) on delete cascade
 );
@@ -45,6 +52,9 @@ create table if not exists admins (
   admin_name varchar(150) not null,
   admin_email varchar(255) not null,
   admin_password varchar(255) not null,
+  admin_img varchar(255) not null default("default.png"),
+  admin_created_at datetime not null default(now()),
+  admin_updated_at datetime not null default(now()) on update now(),
   primary key(admin_id)
 );
 
