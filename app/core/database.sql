@@ -19,6 +19,7 @@ create table if not exists posts (
   post_id int auto_increment not null,
   post_title varchar(255) not null,
   post_content text not null,
+  post_tags varchar(255) not null,
   post_userId int not null,
   post_countView int not null default(0),
   post_active tinyint not null default(1),

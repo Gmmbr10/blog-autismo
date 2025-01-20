@@ -10,7 +10,7 @@ class PostController {
     session_start();
     $data = json_decode(file_get_contents("php://input"),true);
 
-    if ( empty($data["title"]) || empty($data["content"]) ) {
+    if ( empty($data["title"]) || empty($data["content"]) || empty($data["tags"]) ) {
       http_response_code(400);
       $response = ["result"=>"Falta de dados!"];
       echo json_encode($response);

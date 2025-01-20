@@ -6,14 +6,17 @@
     <title>Blog autismo</title>
     {script_style}
     <!-- editor de texto -->
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.css"
+    />
     <script type="importmap">
-        {
-          "imports": {
-              "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.js",
-              "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.0/"
-            }
+      {
+        "imports": {
+          "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.js",
+          "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.0/"
         }
+      }
     </script>
     <!-- fim do editor de texto -->
   </head>
@@ -32,12 +35,18 @@
       >
         <h1 class="title--2">Criar postagem</h1>
 
-        <input type="hidden" value="{userId}" id="userId">
+        <input type="hidden" value="{userId}" id="userId" />
 
         <section id="title" class="form__box">
           <label class="form__label" for="#">Título da postagem</label>
 
-          <input type="text" name="#" id="#" class="form__input" placeholder="Título da postagem" />
+          <input
+            type="text"
+            name="#"
+            id="#"
+            class="form__input"
+            placeholder="Título da postagem"
+          />
 
           <span class="error"></span>
         </section>
@@ -45,14 +54,48 @@
           <label class="form__label" for="#">Postagem</label>
 
           <section>
-            <textarea name="#" id="editor" class="form__textarea" placeholder="Escreva a sua postagem ou copie e cole o conteúdo de um documento já editado!"></textarea>
+            <textarea
+              name="#"
+              id="editor"
+              class="form__textarea"
+              placeholder="Escreva a sua postagem ou copie e cole o conteúdo de um documento já editado!"
+            ></textarea>
           </section>
 
           <span class="error"></span>
         </section>
+        <section id="tags" class="form__box">
+          <p class="form__label">Tags</p>
 
-        <button type="submit" class="btn btn--radius-none w-100">Registrar</button>
-        
+          <section class="column-2">
+            <label class="checkbox">
+              <input type="checkbox" name="tags" id="#" value="Dica" />
+              Dica(s)
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="tags" id="#" value="Pedagogia" />
+              Pedagogia
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="tags" id="#" value="Comportamento" />
+              Comportamento(s)
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="tags" id="#" value="Relato" />
+              Relato(s)
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" name="tags" id="#" value="Comunicação" />
+              Comunicação
+            </label>
+          </section>
+
+          <span id="tags" class="error"></span>
+        </section>
+
+        <button type="submit" class="btn btn--radius-none w-100">
+          Registrar
+        </button>
       </form>
     </main>
 
@@ -60,66 +103,81 @@
 
     <script src="{include_path}/public/assets/scripts/createModal.js"></script>
     <script>
-
-      function cadastrarPostagem()
-      {
-
-        
+      function cadastrarPostagem() {
         const post = {};
-        
+
         const title = document.getElementById("title");
         const content = document.getElementById("content");
+        const select_tags = document.querySelectorAll(
+          "input[type=checkbox]:checked"
+        );
         let error = 0;
-        
-        setTimeout(() => {
 
+        setTimeout(() => {
           post.title = title.querySelector("input").value;
           post.content = content.querySelector("textarea").value;
           post.userId = document.getElementById("userId").value;
+          post.tags = [];
 
-          if ( !post.title || post.title == "" ) {
-  
-            title.querySelector("span.error").innerHTML = "Escreva um título para o conteúdo";
+          if (!post.title || post.title == "") {
+            title.querySelector("span.error").innerHTML =
+              "Escreva um título para o conteúdo";
             error++;
-  
-          }
-  
-          if ( !post.content || post.content == "" ) {
-  
-            content.querySelector("span.error").innerHTML = "Escreva o conteúdo da postagem";
-            error++;
-  
           }
 
-          if ( error != 0 ) {
+          if (!post.content || post.content == "") {
+            content.querySelector("span.error").innerHTML =
+              "Escreva o conteúdo da postagem";
+            error++;
+          }
 
-            setTimeout(()=>{
+          if (select_tags.length == 0) {
+            document.querySelector("span#tags").innerHTML =
+              "Seleciona ao menos uma tag";
+            error++;
+          }
+
+          if (error != 0) {
+            setTimeout(() => {
               title.querySelector("span.error").innerHTML = "";
               content.querySelector("span.error").innerHTML = "";
-            },3000);
+              document.querySelector("span#tags").innerHTML = "";
+            }, 3000);
 
             return false;
-
           }
-          
+
+          for (let i = 0; i < select_tags.length; i++) {
+            post.tags.push(select_tags[i].value);
+          }
+
+          post.tags = post.tags.toString();
+
+          console.log(post);
+
           const ajax = new XMLHttpRequest();
 
           ajax.onload = () => {
-            console.log(ajax);
-            if ( ajax.status == 201 ) {
-              createModal(true,"Postagem registrada. Ela será analisada por um administrador, acompanhe em minhas postagens.","{include_path}/common/criar");
+            if (ajax.status == 201) {
+              createModal(
+                true,
+                "Postagem registrada. Ela será analisada por um administrador, acompanhe em minhas postagens.",
+                "{include_path}/common/criar"
+              );
             } else {
-              createModal(false,"Erro: Não foi possível registrar sua postagem","{include_path}/common/criar");
+              createModal(
+                false,
+                "Erro: Não foi possível registrar sua postagem",
+                "{include_path}/common/criar"
+              );
             }
           };
 
           ajax.open("POST", "{include_path}/api/post/create", true);
           ajax.send(JSON.stringify(post));
           return false;
-          
-        },100);
+        }, 100);
       }
-      
     </script>
     <script type="module">
       import {
@@ -128,25 +186,36 @@
         Bold,
         Italic,
         Heading,
-        PasteFromOffice
-      } from 'ckeditor5';
-    
-      ClassicEditor
-        .create(document.querySelector('#editor'), {
-          plugins: [Essentials, Bold, Italic, Heading,PasteFromOffice],
-          toolbar: [
-            'heading','bold', 'italic'
+        PasteFromOffice,
+      } from "ckeditor5";
+
+      ClassicEditor.create(document.querySelector("#editor"), {
+        plugins: [Essentials, Bold, Italic, Heading, PasteFromOffice],
+        toolbar: ["heading", "bold", "italic"],
+        heading: {
+          options: [
+            {
+              model: "paragraph",
+              title: "Parágrafo",
+              class: "ck-heading_paragraph",
+            },
+            {
+              model: "heading1",
+              view: "h1",
+              title: "Título 1",
+              class: "ck-heading_heading1",
+            },
+            {
+              model: "heading2",
+              view: "h2",
+              title: "Título 2",
+              class: "ck-heading_heading2",
+            },
           ],
-          heading: {
-            options: [
-                { model: 'paragraph', title: 'Parágrafo', class: 'ck-heading_paragraph' },
-                { model: 'heading1', view: 'h1', title: 'Título 1', class: 'ck-heading_heading1' },
-                { model: 'heading2', view: 'h2', title: 'Título 2', class: 'ck-heading_heading2' },
-            ]
-        }
-        })
-        .then( /* ... */)
-        .catch( /* ... */);
+        },
+      })
+        .then(/* ... */)
+        .catch(/* ... */);
     </script>
   </body>
 </html>
