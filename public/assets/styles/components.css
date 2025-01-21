@@ -69,3 +69,10 @@
     flex-direction: column;
     gap: 24px;
 }
+
+.corrections {
+    padding: 16px;
+    background-color: var(--primary);
+    color: var(--light);
+    border-radius: 4px;
+}
