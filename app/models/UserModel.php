@@ -159,5 +159,37 @@ class UserModel extends Model {
     return true;
 
   }
+
+  public function disable(int $user_id)
+  {
+
+    $query = "UPDATE users SET user_active=0 WHERE user_id = :id";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":id",$update,PDO::PARAM_INT);
+    $update->execute();
+
+    if ( $update->rowCount() == 0 ) {
+      return false;
+    }
+
+    return true;
+    
+  }
+
+  public function enable(int $user_id)
+  {
+
+    $query = "UPDATE users SET user_active=1 WHERE user_id = :id";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":id",$update,PDO::PARAM_INT);
+    $update->execute();
+
+    if ( $update->rowCount() == 0 ) {
+      return false;
+    }
+
+    return true;
+    
+  }
   
 }

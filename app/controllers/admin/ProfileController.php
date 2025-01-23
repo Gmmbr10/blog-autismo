@@ -26,6 +26,7 @@ class ProfileController
         $html = str_replace("{include_path}/common/profile", "{include_path}/admin/profile", $html);
         $html = str_replace("{link_api}", "{include_path}/api/admin", $html);
 
+		$html = str_replace("{disable_button}", '', $html);
         $html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
         echo $html;

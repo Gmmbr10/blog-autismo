@@ -71,6 +71,13 @@ class UserController
     session_start();
     $_SESSION["user"] = $result;
 
+    if ($result["user_active"] != 1) {
+
+      $result = $model->enable($result["user_id"]);
+
+      $_SESSION["user"]["user_active"] = 1;
+    }
+
     http_response_code(202);
     return;
   }
@@ -83,14 +90,14 @@ class UserController
     $user_photo = $_SESSION["user"]["user_img"];
     $user_id = $_SESSION["user"]["user_id"];
 
-    $extensao = end(explode(".",$photo["full_path"]));
+    $extensao = end(explode(".", $photo["full_path"]));
     $file_name = md5(uniqid()) . "." . $extensao;
 
     require_once __DIR__ . "/../../models/UserModel.php";
     $model = new UserModel();
-    $result = $model->updatePhoto($user_id,$file_name);
+    $result = $model->updatePhoto($user_id, $file_name);
 
-    if ( $result == false ) {
+    if ($result == false) {
       http_response_code(500);
       $result = json_encode(["result" => "Upload não realizado"]);
       echo $result;
@@ -98,18 +105,17 @@ class UserController
     }
 
     $img_path = __DIR__ . "/../../../public/assets/imgs/profile/";
-    
-    if ( move_uploaded_file($photo["tmp_name"],$img_path . $file_name) == false ) {
+
+    if (move_uploaded_file($photo["tmp_name"], $img_path . $file_name) == false) {
       http_response_code(500);
       $result = json_encode(["result" => "Upload não realizado"]);
       echo $result;
       return;
     }
 
-    if ( $user_photo != "default.png" ) {
-      
-      unlink($img_path . $user_photo);
+    if ($user_photo != "default.png") {
 
+      unlink($img_path . $user_photo);
     }
 
     $_SESSION["user"]["user_img"] = $file_name;
@@ -122,11 +128,11 @@ class UserController
   public function type(array $dataUri)
   {
 
-    $data = json_decode(file_get_contents("php://input"),true);
+    $data = json_decode(file_get_contents("php://input"), true);
 
-    if ( $data["type"] != "Professor" && $data["type"] != "Professor(a) Mediador(a)" && $data["type"] != "Responsável" ) {
+    if ($data["type"] != "Professor" && $data["type"] != "Professor(a) Mediador(a)" && $data["type"] != "Responsável") {
       http_response_code(400);
-      $response = ["result"=>"Dado não é válido"];
+      $response = ["result" => "Dado não é válido"];
       echo json_encode($response);
       return;
     }
@@ -135,9 +141,9 @@ class UserController
     $user_id = $_SESSION["user"]["user_id"];
     require_once __DIR__ . "/../../models/UserModel.php";
     $model = new UserModel();
-    $result = $model->type( [ "userId" => $user_id , "type" => $data["type"] ] );
+    $result = $model->type(["userId" => $user_id, "type" => $data["type"]]);
 
-    if ( $result == false ) {
+    if ($result == false) {
       http_response_code(500);
       $result = json_encode(["result" => "Registro não realizado"]);
       echo $result;
@@ -145,9 +151,9 @@ class UserController
     }
 
     $_SESSION["user"]["user_type"] = $data["type"];
-    
+
     http_response_code(202);
-    $response = ["result"=>"Sucesso"];
+    $response = ["result" => "Sucesso"];
     echo json_encode($response);
     return;
   }
@@ -171,7 +177,7 @@ class UserController
 
     if (!$result) {
       http_response_code(500);
-      $result = json_encode(["result" => "Usuário não atualizado!",$data]);
+      $result = json_encode(["result" => "Usuário não atualizado!", $data]);
       echo $result;
       return;
     }
@@ -207,7 +213,7 @@ class UserController
 
     require_once __DIR__ . "/../../models/UserModel.php";
     $model = new UserModel();
-    $result = $model->updatePassword($user_id,$data["password"]);
+    $result = $model->updatePassword($user_id, $data["password"]);
 
     if (!$result) {
       http_response_code(500);

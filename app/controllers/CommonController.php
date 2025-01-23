@@ -18,7 +18,7 @@ class CommonController
 
 		session_start();
 
-		if ( empty($_SESSION["user"]["user_type"]) ) {
+		if (empty($_SESSION["user"]["user_type"])) {
 			header("location:" . INCLUDE_PATH . "/common/type");
 			return;
 		}
@@ -57,17 +57,16 @@ class CommonController
 				return;
 			}
 
-			$tags_db = explode(",",$result["post_tags"]);
+			$tags_db = explode(",", $result["post_tags"]);
 			$tags_html = "";
 
-			for ( $i = 0 ; $i < sizeof($tags_db) ; $i++ ) {
+			for ($i = 0; $i < sizeof($tags_db); $i++) {
 
-				$tags_html .= '<span class="tags__tag">'. $tags_db[$i] .'</span>';
-
+				$tags_html .= '<span class="tags__tag">' . $tags_db[$i] . '</span>';
 			}
 
 			$html = str_replace("{tags}", $tags_html, $html);
-			
+
 			$html = str_replace("{title}", $result["post_title"], $html);
 			$html = str_replace("{content}", $result["post_content"], $html);
 			$html = str_replace("{content}", $result["post_content"], $html);
@@ -121,7 +120,7 @@ class CommonController
 	{
 		session_start();
 
-		if ( empty($_SESSION["user"]["user_type"]) ) {
+		if (empty($_SESSION["user"]["user_type"])) {
 			header("location:" . INCLUDE_PATH . "/common/type");
 			return;
 		}
@@ -159,15 +158,14 @@ class CommonController
 				return;
 			}
 
-			$tags_db = explode(",",$result["post_tags"]);
+			$tags_db = explode(",", $result["post_tags"]);
 			$tags_html = "";
 
-			for ( $i = 0 ; $i < sizeof($tags_db) ; $i++ ) {
+			for ($i = 0; $i < sizeof($tags_db); $i++) {
 
-				$tags_html .= '<span class="tags__tag">'. $tags_db[$i] .'</span>';
-
+				$tags_html .= '<span class="tags__tag">' . $tags_db[$i] . '</span>';
 			}
-			
+
 			$html = str_replace("{tags}", $tags_html, $html);
 
 			$html = str_replace("{title}", $result["post_title"], $html);
@@ -225,7 +223,7 @@ class CommonController
 	{
 		session_start();
 
-		if ( empty($_SESSION["user"]["user_type"]) ) {
+		if (empty($_SESSION["user"]["user_type"])) {
 			header("location:" . INCLUDE_PATH . "/common/type");
 			return;
 		}
@@ -256,7 +254,7 @@ class CommonController
 
 		session_start();
 
-		if ( empty($_SESSION["user"]["user_type"]) ) {
+		if (empty($_SESSION["user"]["user_type"])) {
 			header("location:" . INCLUDE_PATH . "/common/type");
 			return;
 		}
@@ -337,7 +335,7 @@ class CommonController
 
 		session_start();
 
-		if ( empty($_SESSION["user"]["user_type"]) ) {
+		if (empty($_SESSION["user"]["user_type"])) {
 			header("location:" . INCLUDE_PATH . "/common/type");
 			return;
 		}
@@ -346,6 +344,7 @@ class CommonController
 		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
 		$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
 		$html = file_get_contents(__DIR__ . "/../views/pages/profile.html");
+		$modal_disable = file_get_contents(__DIR__ . "/../views/components/modal-disable.html");
 
 		$header = str_replace("{inicio}", "", $header);
 		$header = str_replace("{recentes}", "", $header);
@@ -361,6 +360,10 @@ class CommonController
 
 		$html = str_replace("{link_api}", "{include_path}/api/user", $html);
 
+		$html = str_replace("{disable_button}", '<button class="btn btn--radius-none btn--warning" onclick="disable(\'{include_path}/common/disable\')">Desabilitar a conta</button>', $html);
+		$html = str_replace("{script_disable}", '<script src="{include_path}/public/assets/script/disableFunction.js"></script>', $html);
+		$html = str_replace("{modal_disable}", $modal_disable, $html);
+
 		$html = str_replace("{include_path}", INCLUDE_PATH, $html);
 
 		echo $html;
@@ -372,7 +375,7 @@ class CommonController
 	{
 		session_start();
 
-		if ( empty($_SESSION["user"]["user_type"]) ) {
+		if (empty($_SESSION["user"]["user_type"])) {
 			header("location:" . INCLUDE_PATH . "/common/type");
 			return;
 		}
@@ -396,30 +399,29 @@ class CommonController
 			return;
 		}
 
-		$tags = explode(",",$result["post_tags"]);
+		$tags = explode(",", $result["post_tags"]);
 
-		for ( $i = 0 ; $i < sizeof($tags) ; $i++ ) { 
+		for ($i = 0; $i < sizeof($tags); $i++) {
 
-			switch($tags[$i]) {
+			switch ($tags[$i]) {
 				case "Dica":
 					$html = str_replace("{dica}", "checked", $html);
-				break;
+					break;
 				case "Comportamento":
 					$html = str_replace("{comp}", "checked", $html);
-				break;
+					break;
 				case "Pedagogia":
 					$html = str_replace("{peda}", "checked", $html);
-				break;
+					break;
 				case "Relato":
 					$html = str_replace("{rela}", "checked", $html);
-				break;
+					break;
 				case "Comunicação":
 					$html = str_replace("{comu}", "checked", $html);
-				break;
+					break;
 				default:
-				break;
+					break;
 			}
-			
 		}
 
 		$html = str_replace("{script_style}", $links, $html);
@@ -443,8 +445,8 @@ class CommonController
 
 		session_start();
 
-		if ( !empty($_SESSION["user"]["user_type"]) ) {
-			header("location:".INCLUDE_PATH."/common");
+		if (!empty($_SESSION["user"]["user_type"])) {
+			header("location:" . INCLUDE_PATH . "/common");
 			return;
 		}
 
@@ -466,6 +468,26 @@ class CommonController
 		echo $html;
 
 		return;
+	}
+
+	public function disable(array $data)
+	{
+
+		session_start();
+
+		if (empty($_SESSION["user"]["user_type"])) {
+			header("location:" . INCLUDE_PATH . "/common/type");
+			return;
+		}
+
+		require_once __DIR__ . "/../core/Model.php";
+		require_once __DIR__ . "/../models/UserModel.php";
+		$model = new UserModel();
+		$result = $model->disable($_SESSION["user"]["user_id"]);
+
+		session_destroy();
+
+		header("location: ".INCLUDE_PATH."/home");
 		
 	}
 }

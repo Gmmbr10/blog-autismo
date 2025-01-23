@@ -115,13 +115,30 @@
               Alterar senha
             </button>
           </form>
+          {disable_button}
         </section>
       </section>
     </main>
 
-    {component_footer}
+    {component_footer} {modal_disable}
     <script src="{include_path}/public/assets/scripts/createModal.js"></script>
     <script>
+      function disable(uri) {
+        const modal = document.getElementById("disable");
+
+        modal.showModal();
+
+        modal.querySelector("button#confirm").addEventListener("click", () => {
+          window.location.href = uri;
+        });
+
+        modal.querySelectorAll("[data-close]").forEach((button) => {
+          button.addEventListener("click", () => {
+            modal.close();
+          });
+        });
+      }
+
       function isValidFile(file) {
         // Verifica o tipo de arquivo (por exemplo somente imagens)
         const validTypes = ["image/jpeg", "image/png", "image/jpg"];
@@ -143,51 +160,39 @@
       let error = 0;
 
       file.addEventListener("change", function (event) {
-
         const files = event.target.files;
 
         if (files.length === 0) {
-
           error_foto.textContent = "Nenhum arquivo selecionado.";
-
         } else {
-
           error_foto.textContent = "";
 
           // Verificar tipo e tamanho dos arquivos
           for (let i = 0; i < files.length; i++) {
-
             const file = files[i];
 
             if (!isValidFile(file)) {
-
               error_foto.innerHTML += `Erro: O arquivo <strong>${file.name}</strong> não é válido.`;
 
               error = 1;
-
             } else {
-
               error_foto.style.color = "green";
 
               error_foto.innerHTML += `Arquivo <strong>${file.name}</strong> está pronto para upload.`;
 
               error = 0;
-
             }
           }
         }
       });
 
       form_perfil.addEventListener("submit", (e) => {
-
         e.preventDefault();
 
         if (error == 1 || file.files.length == 0) {
-
           error_foto.innerHTML = `Escolha um arquivo válido`;
 
           return false;
-
         }
 
         const formData = new FormData();
@@ -197,10 +202,18 @@
         const ajax = new XMLHttpRequest();
 
         ajax.onload = () => {
-          if ( ajax.status == 202 ) {
-            createModal(true,"Imagem atualizada com sucesso!","{include_path}/common/profile");
+          if (ajax.status == 202) {
+            createModal(
+              true,
+              "Imagem atualizada com sucesso!",
+              "{include_path}/common/profile"
+            );
           } else {
-            createModal(false,"Erro: Não foi possível atualizar sua imagem","{include_path}/common/profile");
+            createModal(
+              false,
+              "Erro: Não foi possível atualizar sua imagem",
+              "{include_path}/common/profile"
+            );
           }
         };
 
@@ -214,7 +227,6 @@
       const form_info = document.getElementById("form_info");
 
       form_info.addEventListener("submit", (e) => {
-
         e.preventDefault();
 
         const nome = form_info.querySelector("#nome");
@@ -222,68 +234,63 @@
         const email = form_info.querySelector("#email");
 
         const userData = {
+          name: nome.querySelector("input").value,
 
-            name: nome.querySelector("input").value,
-            
-            email: email.querySelector("input").value
-            
+          email: email.querySelector("input").value,
         };
 
         let error = 0;
 
-        if ( userData.nome == "" ) {
-            
-            nome.querySelector("span").innerHTML = "Preencha o campo nome";
+        if (userData.nome == "") {
+          nome.querySelector("span").innerHTML = "Preencha o campo nome";
 
-            error++;
-            
+          error++;
         }
 
-        if ( userData.email == "" ) {
-            
-            email.querySelector("span").innerHTML = "Preencha o campo email";
-            
-            error++;
-            
+        if (userData.email == "") {
+          email.querySelector("span").innerHTML = "Preencha o campo email";
+
+          error++;
         }
 
-        if ( error != 0 ) {
+        if (error != 0) {
+          setTimeout(() => {
+            nome.querySelector("span").innerHTML = "";
 
-            setTimeout(()=>{
+            email.querySelector("span").innerHTML = "";
+          }, 3000);
 
-                nome.querySelector("span").innerHTML = "";
-                
-                email.querySelector("span").innerHTML = "";
-                
-            },3000);
-
-            return false;
+          return false;
         }
 
         const ajax = new XMLHttpRequest();
 
         ajax.onload = () => {
-
-          if ( ajax.status == 202 ) {
-            createModal(true,"Informações atualizadas com sucesso!","{include_path}/common/profile");
+          if (ajax.status == 202) {
+            createModal(
+              true,
+              "Informações atualizadas com sucesso!",
+              "{include_path}/common/profile"
+            );
           } else {
-            createModal(false,"Erro: Não foi possível atualizar suas informações","{include_path}/common/profile");
+            createModal(
+              false,
+              "Erro: Não foi possível atualizar suas informações",
+              "{include_path}/common/profile"
+            );
           }
-            
         };
-        
-        ajax.open("POST","{link_api}/update",true);
-        
+
+        ajax.open("POST", "{link_api}/update", true);
+
         ajax.send(JSON.stringify(userData));
 
         return false;
-        
       });
-      
+
       const form_password = document.getElementById("form_password");
 
       form_password.addEventListener("submit", (e) => {
-
         e.preventDefault();
 
         const senha = form_password.querySelector("#senha");
@@ -291,74 +298,68 @@
         const confirmar_senha = form_password.querySelector("#confirmar_senha");
 
         const userData = {
+          password: senha.querySelector("input").value,
 
-            password: senha.querySelector("input").value,
-            
-            password_confirm: confirmar_senha.querySelector("input").value
-            
+          password_confirm: confirmar_senha.querySelector("input").value,
         };
 
         let error = 0;
 
-        if ( userData.password == "" ) {
-            
-            senha.querySelector("span").innerHTML = "Preencha o campo senha";
+        if (userData.password == "") {
+          senha.querySelector("span").innerHTML = "Preencha o campo senha";
 
-            error++;
-            
+          error++;
         }
 
-        if ( userData.password_confirm == "" ) {
-            
-            confirmar_senha.querySelector("span").innerHTML = "Preencha o campo confirmar senha";
-            
-            error++;
-            
+        if (userData.password_confirm == "") {
+          confirmar_senha.querySelector("span").innerHTML =
+            "Preencha o campo confirmar senha";
+
+          error++;
         }
 
-        if ( userData.password_confirm != userData.password ) {
-            
-            senha.querySelector("span").innerHTML = "Senhas diferentes";
+        if (userData.password_confirm != userData.password) {
+          senha.querySelector("span").innerHTML = "Senhas diferentes";
 
-            confirmar_senha.querySelector("span").innerHTML = "Senhas diferentes";
-            
-            error++;
-            
+          confirmar_senha.querySelector("span").innerHTML = "Senhas diferentes";
+
+          error++;
         }
 
-        if ( error != 0 ) {
+        if (error != 0) {
+          setTimeout(() => {
+            senha.querySelector("span").innerHTML = "";
 
-            setTimeout(()=>{
+            confirmar_senha.querySelector("span").innerHTML = "";
+          }, 3000);
 
-                senha.querySelector("span").innerHTML = "";
-                
-                confirmar_senha.querySelector("span").innerHTML = "";
-                
-            },3000);
-
-            return false;
+          return false;
         }
 
         const ajax = new XMLHttpRequest();
 
         ajax.onload = () => {
-
-          if ( ajax.status == 202 ) {
-            createModal(true,"Senha atualizada com sucesso!","{include_path}/common/profile");
+          if (ajax.status == 202) {
+            createModal(
+              true,
+              "Senha atualizada com sucesso!",
+              "{include_path}/common/profile"
+            );
           } else {
-            createModal(false,"Erro: Não foi possível atualizar sua senha","{include_path}/common/profile");
+            createModal(
+              false,
+              "Erro: Não foi possível atualizar sua senha",
+              "{include_path}/common/profile"
+            );
           }
-            
         };
-        
-        ajax.open("POST","{link_api}/updatePassword",true);
-        
+
+        ajax.open("POST", "{link_api}/updatePassword", true);
+
         ajax.send(JSON.stringify(userData));
 
         return false;
-        
       });
-      
     </script>
     <script src="{include_path}/public/assets/scripts/viewPassword.js"></script>
   </body>
