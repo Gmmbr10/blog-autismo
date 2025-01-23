@@ -69,6 +69,35 @@
             <span class="error"></span>
           </section>
 
+          <section id="tags" class="form__box">
+            <p class="form__label">Tags</p>
+  
+            <section class="column-2">
+              <label class="checkbox">
+                <input type="checkbox" name="tags" id="#" value="Dica" {dica} />
+                Dica(s)
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="tags" id="#" value="Pedagogia" {peda} />
+                Pedagogia
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="tags" id="#" value="Comportamento" {comp} />
+                Comportamento(s)
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="tags" id="#" value="Relato" {rela} />
+                Relato(s)
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" name="tags" id="#" value="Comunicação" {comu} />
+                Comunicação
+              </label>
+            </section>
+  
+            <span id="tags" class="error"></span>
+          </section>
+
           <button type="submit" class="btn btn--radius-none w-100">
             Corrigir
           </button>
@@ -96,6 +125,9 @@
         
         const title = document.getElementById("title");
         const content = document.getElementById("content");
+        const select_tags = document.querySelectorAll(
+          "input[type=checkbox]:checked"
+        );
         let error = 0;
         
         setTimeout(() => {
@@ -103,6 +135,7 @@
           post.title = title.querySelector("input").value;
           post.content = content.querySelector("textarea").value;
           post.postId = document.getElementById("postId").value;
+          post.tags = [];
 
           if ( !post.title || post.title == "" ) {
   
@@ -118,16 +151,29 @@
   
           }
 
+          if (select_tags.length == 0) {
+            document.querySelector("span#tags").innerHTML =
+              "Seleciona ao menos uma tag";
+            error++;
+          }
+
           if ( error != 0 ) {
 
             setTimeout(()=>{
               title.querySelector("span.error").innerHTML = "";
               content.querySelector("span.error").innerHTML = "";
+              document.querySelector("span#tags").innerHTML = "";
             },3000);
 
             return false;
 
           }
+
+          for (let i = 0; i < select_tags.length; i++) {
+            post.tags.push(select_tags[i].value);
+          }
+
+          post.tags = post.tags.toString();
           
           const ajax = new XMLHttpRequest();
 

@@ -57,6 +57,17 @@ class CommonController
 				return;
 			}
 
+			$tags_db = explode(",",$result["post_tags"]);
+			$tags_html = "";
+
+			for ( $i = 0 ; $i < sizeof($tags_db) ; $i++ ) {
+
+				$tags_html .= '<span class="tags__tag">'. $tags_db[$i] .'</span>';
+
+			}
+
+			$html = str_replace("{tags}", $tags_html, $html);
+			
 			$html = str_replace("{title}", $result["post_title"], $html);
 			$html = str_replace("{content}", $result["post_content"], $html);
 			$html = str_replace("{content}", $result["post_content"], $html);
@@ -147,6 +158,17 @@ class CommonController
 				header("location:" . INCLUDE_PATH . "/common/recentes");
 				return;
 			}
+
+			$tags_db = explode(",",$result["post_tags"]);
+			$tags_html = "";
+
+			for ( $i = 0 ; $i < sizeof($tags_db) ; $i++ ) {
+
+				$tags_html .= '<span class="tags__tag">'. $tags_db[$i] .'</span>';
+
+			}
+			
+			$html = str_replace("{tags}", $tags_html, $html);
 
 			$html = str_replace("{title}", $result["post_title"], $html);
 			$html = str_replace("{content}", $result["post_content"], $html);
@@ -372,6 +394,32 @@ class CommonController
 		if ($result == false) {
 			header("location: " . INCLUDE_PATH . "/common/publishs");
 			return;
+		}
+
+		$tags = explode(",",$result["post_tags"]);
+
+		for ( $i = 0 ; $i < sizeof($tags) ; $i++ ) { 
+
+			switch($tags[$i]) {
+				case "Dica":
+					$html = str_replace("{dica}", "checked", $html);
+				break;
+				case "Comportamento":
+					$html = str_replace("{comp}", "checked", $html);
+				break;
+				case "Pedagogia":
+					$html = str_replace("{peda}", "checked", $html);
+				break;
+				case "Relato":
+					$html = str_replace("{rela}", "checked", $html);
+				break;
+				case "Comunicação":
+					$html = str_replace("{comu}", "checked", $html);
+				break;
+				default:
+				break;
+			}
+			
 		}
 
 		$html = str_replace("{script_style}", $links, $html);

@@ -32,11 +32,12 @@ class PostModel extends Model {
       return false;
     }
 
-    $query = "UPDATE posts SET post_title=:title,post_content=:content WHERE post_id = :postId";
+    $query = "UPDATE posts SET post_title=:title,post_content=:content,post_tags=:tags WHERE post_id = :postId";
     $update = $this->getConnection()->prepare($query);
     $update->bindParam(":title",$data["title"],PDO::PARAM_STR);
     $update->bindParam(":content",$data["content"],PDO::PARAM_STR);
     $update->bindParam(":postId",$data["postId"],PDO::PARAM_INT);
+    $update->bindParam(":tags",$data["tags"],PDO::PARAM_STR);
     $update->execute();
 
     if ( $update->rowCount() == 0 ) {
