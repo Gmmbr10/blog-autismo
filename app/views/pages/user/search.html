@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog autismo</title>
+  {script_style}
+</head>
+<body>
+
+  {component_header}
+
+  <main class="container">
+
+    <section>
+
+        <h2 class="title--2">Buscar</h2>
+
+        <form action="#" method="POST" class="form--none">
+
+            <section class="form__box">
+                <label for="search" class="form__label">Buscar:</label>
+                <input type="text" name="search" id="search" class="form__input">
+            </section>
+
+            <details>
+                <summary class="form__label">Tags</summary>
+                <section class="column-2">
+                    <label class="checkbox">
+                      <input type="checkbox" name="Dica" id="#" value="Dica" />
+                      Dica(s)
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox" name="Pedagogia" id="#" value="Pedagogia" />
+                      Pedagogia
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox" name="Comportamento" id="#" value="Comportamento" />
+                      Comportamento(s)
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox" name="Relato" id="#" value="Relato" />
+                      Relato(s)
+                    </label>
+                    <label class="checkbox">
+                      <input type="checkbox" name="Comunicacao" id="#" value="Comunicação" />
+                      Comunicação
+                    </label>
+                  </section>
+            </details>
+
+            <button type="submit" class="btn btn--radius-none">Buscar</button>
+
+        </form>
+
+        
+    </section>
+    
+    <section>
+      <h2 class="title--2">Resultado</h2>
+
+      <section class="column-3">
+
+        {content}
+        
+      </section>
+
+    </section>
+    
+  </main>
+
+  {component_footer}
+  
+</body>
+</html>

@@ -487,7 +487,153 @@ class CommonController
 
 		session_destroy();
 
-		header("location: ".INCLUDE_PATH."/home");
+		header("location: " . INCLUDE_PATH . "/home");
+	}
+
+	public function buscar(array $data)
+	{
+		session_start();
+
+		if (empty($_SESSION["user"]["user_type"])) {
+			header("location:" . INCLUDE_PATH . "/common/type");
+			return;
+		}
+
+		$links = file_get_contents(__DIR__ . "/../views/components/style.html");
+		$header = file_get_contents(__DIR__ . "/../views/components/header-loged.html");
+		$footer = file_get_contents(__DIR__ . "/../views/components/footer-loged.html");
+		$html = file_get_contents(__DIR__ . "/../views/pages/user/search.html");
+
+		if (sizeof($data) != 0) {
+			$html = file_get_contents(__DIR__ . "/../views/pages/user/post.html");
+			$navbar = file_get_contents(__DIR__ . "/../views/components/navbar-search.html");
+			$html = str_replace("{component_navbar}", $navbar, $html);
+		}
+
+		$header = str_replace("{inicio}", "", $header);
+		$header = str_replace("{buscar}", "navbar__link--active", $header);
+		$header = str_replace("{recentes}", "", $header);
+		$header = str_replace("{criar_postagem}", "", $header);
+
+		$html = str_replace("{script_style}", $links, $html);
+		$html = str_replace("{component_header}", $header, $html);
+		$html = str_replace("{component_footer}", $footer, $html);
+		$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+
+		require_once __DIR__ . "/../core/Model.php";
+		require_once __DIR__ . "/../models/PostModel.php";
+		$model = new PostModel();
+
+		if (sizeof($data) != 0) {
+
+			$result = $model->list($data[0]);
+
+			if (!is_array($result)) {
+				header("location:" . INCLUDE_PATH . "/common/buscar");
+				return;
+			}
+
+			$tags_db = explode(",", $result["post_tags"]);
+			$tags_html = "";
+
+			for ($i = 0; $i < sizeof($tags_db); $i++) {
+
+				$tags_html .= '<span class="tags__tag">' . $tags_db[$i] . '</span>';
+			}
+
+			$html = str_replace("{tags}", $tags_html, $html);
+
+			$html = str_replace("{title}", $result["post_title"], $html);
+			$html = str_replace("{content}", $result["post_content"], $html);
+			$html = str_replace("{content}", $result["post_content"], $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+			$html = str_replace("{author_img}", $result["user_img"], $html);
+			$html = str_replace("{type}", $result["user_type"], $html);
+			$html = str_replace("{author}", $result["user_name"], $html);
+
+			echo $html;
+			return;
+		}
+
+		if (isset($_POST["search"])) {
+
+			$search = array_shift($_POST);
+			$tags = $_POST;
+
+			if ( empty($search) and empty($tags) ) {
+				header("location:".INCLUDE_PATH."/common/buscar");
+			}
+			
+			$result = $model->search($search, $tags);
+
+			if (sizeof($result) == 0) {
+
+				$content = "Nenhum registro encontrado";
+			} else {
+
+				for ($i = 0; $i < sizeof($result); $i++) {
+
+					$content .= '<section class="post" onclick="window.location.href = \'{include_path}/common/buscar/' . $result[$i]["post_id"] . '\'">
+							<header class="post__header">
+								<p>
+								' . $result[$i]["post_title"] . '
+								</p>
+							</header>
 		
+							<main class="post__content">
+								' . $result[$i]["post_content"] . '
+							</main>
+		
+							<footer class="post__footer">
+								<p>' . $result[$i]["user_name"] . '</p>
+							</footer>
+						</section>';
+				}
+			}
+
+
+			$html = str_replace("{content}", $content, $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+
+			echo $html;
+			return;
+		}
+
+		$result = $model->listPublish();
+
+		$content = "";
+
+		if (!is_array($result)) {
+
+			$content = "Nenhum registro encontrado";
+		} else {
+
+			for ($i = 0; $i < sizeof($result); $i++) {
+
+				$content .= '<section class="post" onclick="window.location.href = \'{include_path}/common/buscar/' . $result[$i]["post_id"] . '\'">
+						<header class="post__header">
+							<p>
+							' . $result[$i]["post_title"] . '
+							</p>
+						</header>
+	
+						<main class="post__content">
+							' . $result[$i]["post_content"] . '
+						</main>
+	
+						<footer class="post__footer">
+							<p>' . $result[$i]["user_name"] . '</p>
+						</footer>
+					</section>';
+			}
+		}
+
+		$html = str_replace("{content}", $content, $html);
+		$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+		$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+
+		echo $html;
+		return;
 	}
 }

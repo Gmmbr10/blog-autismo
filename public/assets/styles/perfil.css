@@ -3,6 +3,7 @@
 }
 
 .perfil__img {
+    margin-left: 16px;
     width: 48px;
     height: 48px;
     object-fit: cover;
