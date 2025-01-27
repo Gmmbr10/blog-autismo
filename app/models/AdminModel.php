@@ -114,4 +114,23 @@ class AdminModel extends Model
 
         return true;
     }
+
+    public function create($name,$email,$password)
+    {
+
+        $query = "INSERT INTO admins ( admin_name , admin_email, admin_password ) values ( :name , :email , :password )";
+        $insert = $this->getConnection()->prepare($query);
+        $insert->bindParam(":name",$name,PDO::PARAM_STR);
+        $insert->bindParam(":email",$email,PDO::PARAM_STR);
+        $insert->bindParam(":password",$password,PDO::PARAM_STR);
+        $insert->execute();
+
+        if ($insert->rowCount() == 0) {
+
+            return false;
+        }
+
+        return true;
+        
+    }
 }

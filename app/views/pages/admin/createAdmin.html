@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog autismo</title>
+    <link
+      rel="stylesheet"
+      href="{include_path}/public/assets/styles/admin.css"
+    />
+    {script_style}
+    <!-- editor de texto -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.css"
+    />
+    <script type="importmap">
+      {
+        "imports": {
+          "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.0/ckeditor5.js",
+          "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.0/"
+        }
+      }
+    </script>
+    <!-- fim do editor de texto -->
+  </head>
+  <body>
+    {component_header}
+
+    <main class="flex--row">
+      {component_navbar}
+      <section class="container">
+        <section>
+          <h2 class="title--2">Criar administrador</h2>
+          <form action="#" method="POST" id="login" class="form--none">
+            <section id="nome" class="form__box">
+              <label for="nome" class="form__label">Nome:</label>
+
+              <input
+                type="text"
+                name="nome"
+                class="form__input"
+                placeholder="admin exemplo"
+              />
+
+              <span id="nome" class="error"></span>
+            </section>
+
+            <section id="email" class="form__box">
+              <label for="email" class="form__label">Email:</label>
+
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form__input"
+                placeholder="admin@gmail.com"
+              />
+
+              <span id="email" class="error"></span>
+            </section>
+
+            <button type="submit" class="btn btn--radius-none w-100">
+              Criar
+            </button>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    {component_footer}
+
+    <script src="{include_path}/public/assets/scripts/createModal.js"></script>
+    <script>
+        const form = document.getElementById("login");
+  
+        form.onsubmit = function (event) {
+          event.preventDefault();
+  
+          const userData = {};
+          let error = 0;
+  
+          const email = document.getElementById("email");
+          userData.email = email.querySelector("input").value;
+  
+          if (!userData.email) {
+            error++;
+            email.querySelector("span").innerText = "Preencha o campo email!";
+          }
+  
+          const nome = document.getElementById("nome");
+          userData.name = nome.querySelector("input").value;
+  
+          if (!userData.name) {
+            error++;
+            nome.querySelector("span").innerText = "Preencha o campo nome!";
+          }
+  
+          if (error != 0) {
+            setTimeout(() => {
+              email.querySelector("span").innerText = "";
+  
+              nome.querySelector("span").innerText = "";
+            }, 3000);
+  
+            return;
+          }
+  
+          form.submit();
+        };
+      </script>
+    {create_admin}
+  </body>
+</html>
