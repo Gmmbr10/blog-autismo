@@ -277,6 +277,47 @@ class CommonController
 		require_once __DIR__ . "/../core/Model.php";
 		require_once __DIR__ . "/../models/PostModel.php";
 		$model = new PostModel();
+
+		if (!empty($data[0])) {
+
+			$result = $model->myPublish($_SESSION["user"]["user_id"], $data[0]);
+
+			if (!is_array($result) || $result["review_auth"] == 1 || $result["review_auth"] == 2) {
+				header("location:" . INCLUDE_PATH . "/common/publishs");
+				return;
+			}
+
+			$html = file_get_contents(__DIR__ . "/../views/pages/user/post.html");
+			$navbar = file_get_contents(__DIR__ . "/../views/components/navbar-waiting.html");
+			$html = str_replace("{component_navbar}", $navbar, $html);
+			$html = str_replace("{script_style}", $links, $html);
+			$html = str_replace("{component_header}", $header, $html);
+			$html = str_replace("{component_footer}", $footer, $html);
+			$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
+			$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
+
+			$tags_db = explode(",", $result["post_tags"]);
+			$tags_html = "";
+
+			for ($i = 0; $i < sizeof($tags_db); $i++) {
+
+				$tags_html .= '<span class="tags__tag">' . $tags_db[$i] . '</span>';
+			}
+
+			$html = str_replace("{tags}", $tags_html, $html);
+
+			$html = str_replace("{title}", $result["post_title"], $html);
+			$html = str_replace("{content}", $result["post_content"], $html);
+			$html = str_replace("{content}", $result["post_content"], $html);
+			$html = str_replace("{author}", $result["user_name"], $html);
+			$html = str_replace("{type}", $result["user_type"], $html);
+			$html = str_replace("{author_img}", $result["user_img"], $html);
+			$html = str_replace("{include_path}", INCLUDE_PATH, $html);
+
+			echo $html;
+			return;
+		}
+
 		$result = $model->myPublishs($_SESSION["user"]["user_id"]);
 
 		$content = "";
@@ -302,6 +343,7 @@ class CommonController
 						break;
 					default:
 						$situacao = '<span class="post--waiting" >Aguardando</span>';
+						$redirect = 'onclick="window.location.href = \'{include_path}/common/publishs/' . $result[$i]["post_id"] . '\'"';
 						break;
 				}
 
