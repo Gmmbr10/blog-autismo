@@ -437,7 +437,7 @@ class CommonController
 		$model = new PostModel();
 		$result = $model->myPublish($_SESSION["user"]["user_id"], $data[0]);
 
-		if ($result == false) {
+		if ($result == false || $result["review_auth"] != 1 && $result["review_auth"] != 2) {
 			header("location: " . INCLUDE_PATH . "/common/publishs");
 			return;
 		}
