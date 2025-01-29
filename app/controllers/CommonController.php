@@ -456,9 +456,12 @@ class CommonController
 			$html = file_get_contents(__DIR__ . "/../views/pages/user/editAprove.html");
 		}
 
+		$active_attemption = "";
+		
 		if ($result["post_active"] == 1) {
 			$active = file_get_contents(__DIR__ . "/../views/components/occult.html");
 		} else {
+			$active_attemption = '<p class="text--bold text--center">Lembre-se: editar esta postagem irá reativá-la, tornando-a visível novamente.</p>';
 			$active = file_get_contents(__DIR__ . "/../views/components/unhide.html");
 		}
 
@@ -491,6 +494,7 @@ class CommonController
 		$html = str_replace("{component_header}", $header, $html);
 		$html = str_replace("{component_footer}", $footer, $html);
 		$html = str_replace("{active_button}", $active, $html);
+		$html = str_replace("{active_attemption}", $active_attemption, $html);
 		$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
 		$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
 		$html = str_replace("{postId}", $result["post_id"], $html);
