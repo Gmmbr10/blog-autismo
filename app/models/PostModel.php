@@ -140,7 +140,7 @@ class PostModel extends Model
   public function myPublish(int $userId, int $postId)
   {
 
-    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId WHERE post_id = :postId AND post_userId = :userId limit 1";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id left join reviews on posts.post_id = reviews.review_postId WHERE post_id = :postId AND post_userId = :userId limit 1";
     $select = $this->getConnection()->prepare($query);
     $select->bindParam(":userId", $userId, PDO::PARAM_INT);
     $select->bindParam(":postId", $postId, PDO::PARAM_INT);

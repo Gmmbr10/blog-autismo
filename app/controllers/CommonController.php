@@ -282,9 +282,16 @@ class CommonController
 
 			$result = $model->myPublish($_SESSION["user"]["user_id"], $data[0]);
 
-			if (!is_array($result) || $result["review_auth"] == 1 || $result["review_auth"] == 2) {
+			if (!is_array($result)) {
 				header("location:" . INCLUDE_PATH . "/common/publishs");
 				return;
+			}
+
+			if ( !empty($result["review_auth"]) ) {
+				if ($result["review_auth"] == 1 || $result["review_auth"] == 2) {
+					header("location:" . INCLUDE_PATH . "/common/publishs");
+					return;
+				}
 			}
 
 			$html = file_get_contents(__DIR__ . "/../views/pages/user/post.html");
