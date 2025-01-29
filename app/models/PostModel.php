@@ -32,7 +32,7 @@ class PostModel extends Model
       return false;
     }
 
-    $query = "UPDATE posts SET post_title=:title,post_content=:content,post_tags=:tags WHERE post_id = :postId";
+    $query = "UPDATE posts SET post_active=1,post_title=:title,post_content=:content,post_tags=:tags WHERE post_id = :postId";
     $update = $this->getConnection()->prepare($query);
     $update->bindParam(":title", $data["title"], PDO::PARAM_STR);
     $update->bindParam(":content", $data["content"], PDO::PARAM_STR);
@@ -55,7 +55,7 @@ class PostModel extends Model
   public function listViews()
   {
 
-    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where review_auth = 1 order by post_countView desc";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where post_active = 1 and review_auth = 1 order by post_countView desc";
     // $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id order by posts.post_countView desc";
     $select = $this->getConnection()->prepare($query);
     $select->execute();
@@ -76,7 +76,7 @@ class PostModel extends Model
   public function listPublish()
   {
 
-    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where review_auth = 1 order by posts.post_created_at desc";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId where post_active = 1 and review_auth = 1 order by posts.post_created_at desc";
     // $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id order by posts.post_id desc";
     $select = $this->getConnection()->prepare($query);
     $select->execute();
@@ -199,5 +199,35 @@ class PostModel extends Model
     $select->execute();
 
     return $select->fetchAll();
+  }
+
+  public function occult(int $user_id, int $post_id)
+  {
+    $query = "UPDATE posts set post_active=2 where post_id = :postId and post_userId = :userId";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":postId", $post_id, PDO::PARAM_INT);
+    $update->bindParam(":userId", $user_id, PDO::PARAM_INT);
+    $update->execute();
+
+    if ($update->rowCount() == 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public function unhide(int $user_id, int $post_id)
+  {
+    $query = "UPDATE posts set post_active=1 where post_id = :postId and post_userId = :userId";
+    $update = $this->getConnection()->prepare($query);
+    $update->bindParam(":postId", $post_id, PDO::PARAM_INT);
+    $update->bindParam(":userId", $user_id, PDO::PARAM_INT);
+    $update->execute();
+
+    if ($update->rowCount() == 0) {
+      return false;
+    }
+
+    return true;
   }
 }

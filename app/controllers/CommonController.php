@@ -335,6 +335,9 @@ class CommonController
 				switch ($result[$i]["review_auth"]) {
 					case '1':
 						$situacao = '<span class="post--aprove" >Aprovado</span>';
+						if ( $result[$i]["post_active"] != 1 ) {
+							$situacao = '<span class="post--aprove" >Aprovado - Ocultado</span>';
+						}
 						$redirect = 'onclick="window.location.href = \'{include_path}/common/edit/' . $result[$i]["post_id"] . '\'"';
 						break;
 					case '2':
@@ -446,6 +449,12 @@ class CommonController
 			$html = file_get_contents(__DIR__ . "/../views/pages/user/editAprove.html");
 		}
 
+		if ($result["post_active"] == 1) {
+			$active = file_get_contents(__DIR__ . "/../views/components/occult.html");
+		} else {
+			$active = file_get_contents(__DIR__ . "/../views/components/unhide.html");
+		}
+
 		$tags = explode(",", $result["post_tags"]);
 
 		for ($i = 0; $i < sizeof($tags); $i++) {
@@ -474,6 +483,7 @@ class CommonController
 		$html = str_replace("{script_style}", $links, $html);
 		$html = str_replace("{component_header}", $header, $html);
 		$html = str_replace("{component_footer}", $footer, $html);
+		$html = str_replace("{active_button}", $active, $html);
 		$html = str_replace("{user_img}", $_SESSION["user"]["user_img"], $html);
 		$html = str_replace("{userId}", $_SESSION["user"]["user_id"], $html);
 		$html = str_replace("{postId}", $result["post_id"], $html);
