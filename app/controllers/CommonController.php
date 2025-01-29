@@ -294,6 +294,7 @@ class CommonController
 				switch ($result[$i]["review_auth"]) {
 					case '1':
 						$situacao = '<span class="post--aprove" >Aprovado</span>';
+						$redirect = 'onclick="window.location.href = \'{include_path}/common/edit/' . $result[$i]["post_id"] . '\'"';
 						break;
 					case '2':
 						$situacao = '<span class="post--reprove" >Reprovado</span>';
@@ -397,6 +398,10 @@ class CommonController
 		if ($result == false) {
 			header("location: " . INCLUDE_PATH . "/common/publishs");
 			return;
+		}
+
+		if ($result["review_auth"] == 1) {
+			$html = file_get_contents(__DIR__ . "/../views/pages/user/editAprove.html");
 		}
 
 		$tags = explode(",", $result["post_tags"]);
@@ -560,10 +565,10 @@ class CommonController
 			$search = array_shift($_POST);
 			$tags = $_POST;
 
-			if ( empty($search) and empty($tags) ) {
-				header("location:".INCLUDE_PATH."/common/buscar");
+			if (empty($search) and empty($tags)) {
+				header("location:" . INCLUDE_PATH . "/common/buscar");
 			}
-			
+
 			$result = $model->search($search, $tags);
 
 			if (sizeof($result) == 0) {
