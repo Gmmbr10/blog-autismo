@@ -1,11 +1,11 @@
 <span
-  onclick="desocultar({postId})"
+  onclick="ativar({postId})"
   class="btn btn--radius-none w-100"
 >
-  Desocultar postagem
+  Reativar postagem
 </span>
 <script>
-  function desocultar(post_id) {
+  function ativar(post_id) {
     const id = post_id;
 
     const ajax = new XMLHttpRequest();
@@ -14,13 +14,13 @@
       if (ajax.status == 202) {
         createModal(
           true,
-          "Postagem desocultada. Você pode ocultar clicando em: Ocultar postagem.",
+          "Postagem desocultada. Você pode desativar sua postagem clicando em: Desativar postagem.",
           "{include_path}/common/publishs"
         );
       } else {
         createModal(
           false,
-          "Erro: Não foi possível desocultar sua postagem",
+          "Erro: Não foi possível ativar sua postagem",
           "{include_path}/common/publishs"
         );
       }
