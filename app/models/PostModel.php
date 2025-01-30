@@ -104,7 +104,7 @@ class PostModel extends Model
     } else {
       session_start();
 
-      if (isset($_SESSION["user"])) {
+      if (isset($_SESSION["user"]["user_id"])) {
         require_once(__DIR__ . "/ViewModel.php");
         $views = new ViewModel();
         $views->add($postId, $_SESSION["user"]["user_id"]);
