@@ -83,7 +83,7 @@ class PublishsController
 
                 for ($i = 0; $i < sizeof($result); $i++) {
 
-                    $content .= '<section class="post" onclick="window.location.href = \'{include_path}/common/buscar/' . $result[$i]["post_id"] . '\'">
+                    $content .= '<section class="post" onclick="window.location.href = \'{include_path}/admin/publishs/' . $result[$i]["post_id"] . '\'">
 							<header class="post__header">
 								<p>
 								' . $result[$i]["post_title"] . '
