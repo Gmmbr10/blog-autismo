@@ -97,7 +97,7 @@ class PostModel extends Model
   public function list(int $postId, bool $isAdmin = false)
   {
 
-    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId WHERE post_id = :id AND review_auth = 1";
+    $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id inner join reviews on posts.post_id = reviews.review_postId WHERE post_id = :id AND post_active = 1 AND review_auth = 1";
 
     if ($isAdmin) {
       $query = "SELECT * FROM posts inner join users on posts.post_userId = users.user_id left join reviews on posts.post_id = reviews.review_postId WHERE post_id = :id";
