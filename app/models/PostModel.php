@@ -156,7 +156,7 @@ class PostModel extends Model
   public function search($search, $tags)
   {
 
-    $query = 'SELECT * FROM posts join reviews on posts.post_id = reviews.review_postId WHERE review_auth = 1';
+    $query = 'SELECT * FROM posts join reviews on posts.post_id = reviews.review_postId WHERE post_active = 1 AND review_auth = 1';
 
     if (!empty($tags)) {
 
