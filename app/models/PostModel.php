@@ -156,12 +156,12 @@ class PostModel extends Model
   public function search($search, $tags)
   {
 
-    $query = 'SELECT * FROM posts join reviews on posts.post_id = reviews.review_postId WHERE post_active = 1 AND review_auth = 1';
+    $query = 'SELECT * FROM posts inner join users on posts.post_userId = users.user_id join reviews on posts.post_id = reviews.review_postId WHERE post_active = 1 AND review_auth = 1';
 
     if (!empty($tags)) {
 
       if (!empty($search)) {
-        $query .= " AND post_title like :search AND post_content like :search";
+        $query .= " AND post_title like :search OR post_content like :search";
         $search = "%" . $search . "%";
       }
 
@@ -191,7 +191,7 @@ class PostModel extends Model
       return false;
     }
 
-    $query .= " AND post_title like :search AND post_content like :search";
+    $query .= " AND post_title like :search OR post_content like :search";
     $search = "%" . $search . "%";
 
     $select = $this->getConnection()->prepare($query);
